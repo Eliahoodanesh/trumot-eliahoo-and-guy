@@ -1,30 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Login from './Login';
-
 
 function MyForm() {
   return (
     <div className='Enter-form'>
       <h1>ברוכים הבאים!</h1>
       <br></br>
-      <button onClick={handleLogin}>התחברות</button>
+      <Link to="/login"><button>התחברות</button></Link>
       <br></br>
-      <button onClick={handleRegister}>הרשמה</button>
+      <Link to="/register"><button>הרשמה</button></Link>
     </div>
   );
-}
-
-function handleLogin() {
-  // מנהל כניסה למערכת
-  <Link to={Login}></Link>
-  // יכול להיות כאן קוד לפתיחת חלון כניסה או התקשרות ל-API
-}
-
-function handleRegister() {
-  // מנהל הרשמה למערכת
-  console.log('הרשמה נלחצה');
-  // יכול להיות כאן קוד לפתיחת חלון הרשמה או התקשרות ל-API
 }
 
 export default MyForm;
