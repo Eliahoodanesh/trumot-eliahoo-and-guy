@@ -1,0 +1,62 @@
+.App {
+  background-color: #007bff; /* צבע תכלת */
+  margin: 0; /* מסיר גבולות של הדף */
+  padding: 0; /* מסיר ריווח בסיסי */
+  font-family: Arial, sans-serif; /* סוג גופן כללי */
+ 
+}
+
+.App-img {
+  width: 200px;
+  height: 200px;
+}
+
+.App-header {
+  background-color: #cfe2f3; /* צבע תכלת רך יותר */
+}
+.Enter-form {
+  background-color: #f8f9fa; /* רקע אפור בהיר */
+  border-radius: 20px; /* פינות מעוגלות */
+  display: flex;
+  flex-direction: column; /* תצוגה של האלמנטים בציר האנכי */
+  justify-content: center;
+  align-items: center;
+  padding: 40px; /* מרווח בפנים לפריטים */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* הצללה קלה */
+  width: 300px; /* רוחב קבוע */
+  margin: auto; /* מרכוז אופקית ואנכית */
+}
+
+.Enter-form h1 {
+  margin-bottom: 20px; /* מרווח מתחת לכותרת */
+  color: #007bff; /* צבע כחול */
+  text-align: center;
+}
+
+.Enter-form button {
+  background-color: #007bff; /* צבע כחול */
+  color: white; /* צבע רקע למלל */
+  border: none; /* ללא מסגרת */
+  border-radius: 5px; /* פינות מעוגלות */
+  padding: 10px 20px; /* מרווח פנים */
+  margin: 10px 0; /* מרווח מעל ומתחת לכפתור */
+  cursor: pointer; /* סמן עכבר מראה כיד במעבר */
+  transition: background-color 0.3s ease; /* אנימציה עבור שינוי צבע בעכבר */
+}
+
+.Enter-form button:hover {
+  background-color: #0056b3; /* צבע כחול כהה במעבר עכבר */
+}
+
+.Enter-form-register {
+  background-color: #f8f9fa; /* רקע אפור בהיר */
+  border-radius: 20px; /* פינות מעוגלות */
+  display: flex;
+  flex-direction: column; /* תצוגה של האלמנטים בציר האנכי */
+  justify-content: center;
+  align-items: center;
+  padding: 40px; /* מרווח בפנים לפריטים */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* הצללה קלה */
+  width: 450px; /* רוחב קבוע */
+  margin: auto; /* מרכוז אופקית ואנכית */
+}
