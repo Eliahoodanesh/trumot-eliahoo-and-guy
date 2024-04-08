@@ -14,7 +14,7 @@ function App() {
       <header className="App-header">
         <img src={photo_trumot} className='App-img'></img>
       </header>
-      <About/>
+      <MyForm/>
       </Router>
     </div>
   );
