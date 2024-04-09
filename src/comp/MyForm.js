@@ -15,6 +15,7 @@ function MyForm() {
       <button type='button' className='btn btn-primary'>הרשמה</button>
       </Link>
       <br></br>
+      <p>שכחתי סיסמא</p>
     </div>
   );
 }
