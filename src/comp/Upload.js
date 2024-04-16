@@ -43,6 +43,9 @@ export default function Upload() {
           </div>
         </div>
         <br></br>
+        <input type='checkbox' id='approvePhine'></input>
+        <label>מאשר שימוש במספר הטלפון שלי</label>
+        <br></br>
         <div className='text-center'>
         <button type='button' class="btn btn-primary">העלה פריט</button>
         </div>
