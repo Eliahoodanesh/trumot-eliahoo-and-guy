@@ -42,6 +42,10 @@ export default function Upload() {
             </div>
           </div>
         </div>
+        <br></br>
+        <div className='text-center'>
+        <button type='button' class="btn btn-primary">העלה פריט</button>
+        </div>
       </div>
     </div>
   );

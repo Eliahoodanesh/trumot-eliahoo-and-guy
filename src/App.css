@@ -62,7 +62,7 @@
 }
 
 .custom-header{
-  background-color: grey;
+  background-color: silver;
 }
 
 .custom-link{
@@ -120,4 +120,9 @@
 .container-container1 .col-md{
   display: flex;
   align-items: center;
+}
+
+footer{
+  background-color: black;
+  color: white;
 }
