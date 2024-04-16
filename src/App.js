@@ -9,6 +9,8 @@ import Register from './comp/Register';
 import Login from './comp/Login';
 import MyForm from './comp/MyForm';
 import Upload from './comp/Upload';
+import Query from './comp/Query';
+import Footer from './comp/Footer';
 
 
 function App() {
@@ -21,15 +23,10 @@ function App() {
           <Route path='/About' element={<About/>}/>
           <Route path='/Upload' element={<Upload/>}/>
           <Route path='/Contact' element={<Contact/>}/>
+          <Route path='/Query' element={<Query/>}/>
         </Routes>
+        <Footer/>
       </BrowserRouter>
-      {/* <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<MyForm/>}></Route>
-        <Route path='/Login' element={<Login/>}></Route>
-        <Route path='/Register' element={<Register/>}></Route>
-      </Routes>
-      </BrowserRouter> */}
     </div>
   );
 }

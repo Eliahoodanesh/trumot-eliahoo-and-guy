@@ -62,7 +62,7 @@
 }
 
 .custom-header{
-  background-color: grey;
+  background-color: silver;
 }
 
 .custom-link{
@@ -103,4 +103,26 @@
 .uploaded-image {
   max-width: 100%;
   margin-top: 10px;
+}
+
+.container-container1{
+  padding-left: 75px;
+  padding-right: 75px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container-container1 img{
+  width: auto;
+  max-height: 300px;
+}
+
+.container-container1 .col-md{
+  display: flex;
+  align-items: center;
+}
+
+footer{
+  background-color: black;
+  color: white;
 }

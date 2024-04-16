@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import photo_trumot from '../img/photo_trumot.jpg';
 import '../App.css';
+import Search from './Search';
 
 export default function Header() {
   return (
@@ -17,10 +18,9 @@ export default function Header() {
           <span className="mx-2"> </span>
           <Link to="/Contact" className='custom-link'>צור קשר</Link>
         </div>
-        <form className="d-flex flex-grow-1">
-          <input className="form-control me-2 flex-grow-1" type="search" placeholder="מה תרצה לחפש?" aria-label="Search" />
-          <button className="btn btn-primary" type="submit">חפש</button>
-        </form>
+        <div className="flex-grow-1 d-flex justify-content-center justify-content-md-end"> {/* Center the Search component and align to end on medium and larger screens */}
+          <Search />
+        </div>
       </header>
     </div>
   )
