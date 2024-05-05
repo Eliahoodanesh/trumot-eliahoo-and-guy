@@ -11,7 +11,7 @@ import MyForm from './comp/MyForm';
 import Upload from './comp/Upload';
 import Query from './comp/Query';
 import Footer from './comp/Footer';
-
+import Error from './comp/Error';
 
 function App() {
   return (
@@ -24,6 +24,7 @@ function App() {
           <Route path='/Upload' element={<Upload/>}/>
           <Route path='/Contact' element={<Contact/>}/>
           <Route path='/Query' element={<Query/>}/>
+          <Route path='/*' element={<Error/>}/>
         </Routes>
         <Footer/>
       </BrowserRouter>

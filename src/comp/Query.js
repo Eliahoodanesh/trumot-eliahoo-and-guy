@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dropdown, FormControl, InputGroup } from 'react-bootstrap'
+import { Button, Dropdown, FormControl, InputGroup } from 'react-bootstrap'
 
 export default function Query() {
   return (
@@ -30,6 +30,7 @@ export default function Query() {
                         placeholder='חפש לפי פריט'
                         aria-label='search'
                     />
+                    <Button>חפש</Button>
                     </InputGroup>
                 </Dropdown.Menu>
                 </Dropdown>
