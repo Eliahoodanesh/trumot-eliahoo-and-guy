@@ -2,17 +2,25 @@ import React from 'react'
 
 export default function Contact() {
   return (
-    <div className='container'>
-      <h1 style={{textDecoration: "underline"}}>צור קשר</h1>
-      <div className='row'>
-        <div className='col-sm text-center'>
-      <h2>אליהו דאנש</h2>
-      <h3><a href='mailto:danesheliahoo@gmail.com'>מייל</a></h3>
-        </div>
-        <div className='col-sm text-center'>
-                <h2>גיא ברכה</h2>
-      <h3><a href='mailto:guy.bracha@gmail.com'>מייל</a></h3>
+    <div className="container">
+      <h1 className="mt-5">צור קשר</h1>
+      <div className="row mt-4">
+        <div className="col-md-6">
+          <div className="card">
+            <div className="card-body">
+              <h3>אליהו דאנש - 0525721369  <br></br>גיא ברכה - 0525914445</h3>
+            </div>
           </div>
+        </div>
+        <div className="col-md-6">
+          <div className="card">
+            <div className="card-body">
+              <h3>דוא"ל:</h3>
+              <p>danesheliahoo@gmail.com</p>
+              <p>guy.bracha@gmail.com</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

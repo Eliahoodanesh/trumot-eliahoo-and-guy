@@ -122,7 +122,21 @@
   align-items: center;
 }
 
-footer{
-  background-color: black;
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
   color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+body{
+  background-color:#c5e2ff6e;
+}
+
+.item{
+  background-color: white;
 }
