@@ -12,9 +12,9 @@ export default function Header() {
           <img src={photo_trumot} alt='logo' className='App-img'></img>
           <Link to="/" className='custom-link'>בית</Link>
           <span className="mx-2"> </span>
-          <Link to="/About" className='custom-link'>אודות</Link>
-          <span className="mx-2"> </span>
           <Link to="/Upload" className='custom-link'>העלה פריט</Link>
+          <span className="mx-2"> </span>
+          <Link to="/About" className='custom-link'>אודות</Link>
           <span className="mx-2"> </span>
           <Link to="/Contact" className='custom-link'>צור קשר</Link>
         </div>
