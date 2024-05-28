@@ -17,14 +17,13 @@ export default function Header() {
           <Link to="/About" className='custom-link'>אודות</Link>
           <span className="mx-2"> </span>
           <Link to="/Contact" className='custom-link'>צור קשר</Link>
+          <span className="mx-2"> </span>
+          <Link to="/Query" className='custom-link'>חפש</Link>
         </div>
-        <div className="search-container d-flex justify-content-center mx-3 flex-grow-1"> {/* Center the Search component with margin for separation */}
-          <Search />
-        </div>
-        <div className="logout-container d-flex justify-content-center justify-content-md-end">
+        <div className="flex-grow-1 d-flex justify-content-center justify-content-md-end">
           <Link to="MyForm"><button className="btn btn-primary mx-3">התנתק</button></Link>
         </div>
       </header>
     </div>
-  );
+  )
 }
