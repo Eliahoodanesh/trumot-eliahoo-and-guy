@@ -18,10 +18,13 @@ export default function Header() {
           <span className="mx-2"> </span>
           <Link to="/Contact" className='custom-link'>צור קשר</Link>
         </div>
-        <div className="flex-grow-1 d-flex justify-content-center justify-content-md-end"> {/* Center the Search component and align to end on medium and larger screens */}
+        <div className="search-container d-flex justify-content-center mx-3 flex-grow-1"> {/* Center the Search component with margin for separation */}
           <Search />
+        </div>
+        <div className="logout-container d-flex justify-content-center justify-content-md-end">
+          <Link to="MyForm"><button className="btn btn-primary mx-3">התנתק</button></Link>
         </div>
       </header>
     </div>
-  )
+  );
 }
