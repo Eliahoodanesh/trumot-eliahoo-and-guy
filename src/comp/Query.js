@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Dropdown, FormControl, InputGroup } from 'react-bootstrap';
+import { Button, Dropdown, FormControl, InputGroup, Container, Row, Col, Card } from 'react-bootstrap';
 
 const areas = ['צפון', 'מרכז', 'דרום'];
 
@@ -17,30 +17,27 @@ export default function Query() {
   };
 
   return (
-    <div className='container'>
-      <h1>חפש לפי...</h1>
-      <div className='container-sm text-center'>
-        <div className='row'>
-          <div className='col-sm-6 mb-3'>
-            <Dropdown>
-              <Dropdown.Toggle variant='success' id='dropdown-area'>
-                {selectedArea ? selectedArea : 'אזור'}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {areas.map((area, index) => (
-                  <Dropdown.Item key={index} onClick={() => handleAreaSelect(area)}>
-                    {area}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-          <div className='col-sm-6 mb-3'>
-            <Dropdown>
-              <Dropdown.Toggle variant='success' id='dropdown-item'>
-                פריט
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
+    <Container className='mt-5'>
+      <Row className='justify-content-center'>
+        <Col xs={12} md={8} lg={6}>
+          <Card className='p-4 shadow'>
+            <h1 className='text-center mb-4'>חפש לפי...</h1>
+            <Row className='text-center mb-3'>
+              <Col sm={6}>
+                <Dropdown>
+                  <Dropdown.Toggle variant='success' id='dropdown-area' className='w-100'>
+                    {selectedArea ? selectedArea : 'אזור'}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {areas.map((area, index) => (
+                      <Dropdown.Item key={index} onClick={() => handleAreaSelect(area)}>
+                        {area}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Col>
+              <Col sm={6}>
                 <InputGroup>
                   <FormControl
                     placeholder='חפש לפי פריט'
@@ -48,13 +45,15 @@ export default function Query() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
-                  <Button onClick={handleSearch}>חפש</Button>
+                  <Button variant='primary' onClick={handleSearch}>
+                    חפש
+                  </Button>
                 </InputGroup>
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-        </div>
-      </div>
-    </div>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }
