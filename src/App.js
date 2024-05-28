@@ -25,6 +25,9 @@ function App() {
           <Route path='/Contact' element={<Contact/>}/>
           <Route path='/Query' element={<Query/>}/>
           <Route path='/*' element={<Error/>}/>
+          <Route path='MyForm' element={<MyForm/>}/>
+          <Route path='Login' element={<Login/>}/>
+          <Route path='Register' element={<Register/>}/>
         </Routes>
         <Footer/>
       </BrowserRouter>
