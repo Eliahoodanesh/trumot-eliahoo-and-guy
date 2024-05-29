@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Dropdown, FormControl, InputGroup, Container, Row, Col, Card } from 'react-bootstrap';
 
-const areas = ['צפון', 'מרכז', 'דרום'];
+const areas = ['כל הארץ','צפון', 'מרכז', 'דרום'];
 
 export default function Query() {
   const [searchTerm, setSearchTerm] = useState('');
