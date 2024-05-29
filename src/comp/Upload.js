@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css'; // Import your CSS file
 
-
 export default function Upload() {
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [cities, setCities] = useState([]);
 
   const apiUrl = "https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=1272";
@@ -24,14 +23,20 @@ export default function Upload() {
   }, []);
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0]; // Accessing the file from event.target.files
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    if (file) {
+    const files = event.target.files; // Accessing the files from event.target.files
+    const newImagePreviews = [];
+
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        newImagePreviews.push(reader.result);
+        // Setting state after reading all files
+        if (newImagePreviews.length === files.length) {
+          setImagePreviews([...imagePreviews, ...newImagePreviews]);
+        }
+      };
       reader.readAsDataURL(file);
-    }
+    });
   };
 
   return (
@@ -43,8 +48,18 @@ export default function Upload() {
         <div className='row'>
           <div className='col-md-3'>
             <div className='upload-container'>
-              <input id='file-upload' type='file' accept='image' onChange={handleFileChange} />
-              {imagePreview && <img src={imagePreview} alt='Uploaded' className='uploaded-image' />}
+              <input 
+                id='file-upload' 
+                type='file' 
+                accept='image/*' 
+                multiple 
+                onChange={handleFileChange} 
+                style={{ display: 'none' }} // Hide the default file input
+              />
+              <label htmlFor='file-upload' className='btn btn-primary'>העלה תמונות</label>
+              {imagePreviews.length > 0 && imagePreviews.map((preview, index) => (
+                <img key={index} src={preview} alt={`Uploaded ${index}`} className='uploaded-image' />
+              ))}
             </div>
           </div>
           <div className='col-md-9'>
@@ -66,14 +81,14 @@ export default function Upload() {
             </div>
           </div>
         </div>
-        <br></br>
-        <input type='checkbox' id='approvePhine'></input>
-        <label>מאשר שימוש במספר הטלפון שלי</label>
-        <br></br>
+        <br />
+        <input type='checkbox' id='approvePhone' />
+        <label htmlFor='approvePhone'>מאשר שימוש במספר הטלפון שלי</label>
+        <br />
         <div className='text-center'>
-        <button type='button' className="btn btn-primary">העלה פריט</button>
+          <button type='button' className='btn btn-primary'>העלה פריט</button>
         </div>
-        <br></br>
+        <br />
       </div>
     </div>
   );

@@ -2,9 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import photo_trumot from '../img/photo_trumot.jpg';
 import '../App.css';
-import Search from './Search';
 
-export default function Header() {
+export default function Header({onLogout}) {
   return (
     <div className='container'>
       <header className='custom-header d-flex flex-wrap align-items-center justify-content-between'>
@@ -21,7 +20,7 @@ export default function Header() {
           <Link to="/Query" className='custom-link'>חפש</Link>
         </div>
         <div className="flex-grow-1 d-flex justify-content-center justify-content-md-end">
-          <Link to="MyForm"><button className="btn btn-primary mx-3">התנתק</button></Link>
+          <Link to="MyForm"><button className="btn btn-primary mx-3" onClick={onLogout}>התנתק</button></Link>
         </div>
       </header>
     </div>

@@ -5,7 +5,7 @@ import ItemList from './ItemList';
 function HomePage() {
   return (
     <div className='container-fluid'>
-        <div className='container'>
+        <div className='container content-container'>
         <h2>דף בית</h2>
           <ItemList/>
         </div>
