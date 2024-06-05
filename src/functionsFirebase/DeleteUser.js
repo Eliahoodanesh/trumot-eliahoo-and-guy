@@ -1,4 +1,4 @@
-import { db } from '../firebase/FirebaseConfig'
+import { db } from '../config/Firebase'
 import { doc, deleteDoc } from 'firebase/firestore'
 
 const DeleteUser = async(id) => {
