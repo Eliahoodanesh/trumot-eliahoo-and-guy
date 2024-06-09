@@ -15,7 +15,7 @@
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",
-    "react-router-dom": "^6.23.0",
+    "react-router-dom": "^6.23.1",
     "react-scripts": "^5.0.1",
     "reactstrap": "^9.2.2",
     "source-map-loader": "^5.0.0",

@@ -23,3 +23,5 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const firestore = getFirestore(app); // Correct import path for getFirestore
 export const auth = getAuth(app);
+
+export const db = getFirestore(app);
