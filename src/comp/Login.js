@@ -8,15 +8,6 @@ function Login() {
       <h1>התחברות</h1>
       <br />
       <Auth/>
-      <label>
-        שם משתמש:
-        <input type='text' className='form-control' />
-      </label>
-      <br />
-      <label>
-        סיסמא:
-        <input type='password' className='form-control' />
-      </label>
       <div className="form-check">
         <input className="form-check-input" type="radio" value="user" id="flexRadioDefault1" name="flexRadioDefault" />
         <label className="form-check-label" htmlFor="flexRadioDefault1">

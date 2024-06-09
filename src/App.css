@@ -143,3 +143,8 @@ body{
 .content-container {
   margin-top: 20px; /* Adjust the value as needed */
 }
+
+.center-button {
+  display: flex;
+  justify-content: center;
+}
