@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { auth, db } from "../config/Firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
-import { Link } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 
 // פונקציית signUp 
 export const signUp = async (firstName, lastName, location, phoneNumber, email, username, password) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password); // Creating user with email and password
         const user = userCredential.user;
+        
 
         // Saving user data to Firestore
         await setDoc(doc(db, "users", user.uid), {
@@ -28,10 +29,23 @@ export const signUp = async (firstName, lastName, location, phoneNumber, email, 
     }
 };
 
+export const useLogout = () => {
+    const logout = async () => {
+        try {
+            await auth.signOut(); // תיקון לפונקציה signOut
+            console.log("logged out");
+        } catch (err) {
+            console.error(err);
+        }
+    };
+    return{logout};
+}
+
 // קומפוננטת Auth
 export const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate(); 
 
     console.log(auth?.currentUser?.email); // Null check to prevent errors
 
@@ -39,17 +53,10 @@ export const Auth = () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             console.log("Signed in successfully");
+            navigate("/")
         } catch (err) {
             console.error("Error signing in:", err.message);
             alert(err.message); // Show error message to the user
-        }
-    };
-
-    const signOut = async () => {
-        try {
-            await auth.signOut(); // תיקון לפונקציה signOut
-        } catch (err) {
-            console.error(err);
         }
     };
 
