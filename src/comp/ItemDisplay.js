@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function ItemDisplay(props) {
-const {imageUrl, donatingUser, region, phoneNum, itemDesc, itemType} = props;
+const {imageUrl, donatingUser, city, phoneNum, itemDesc, itemName} = props;
 
   return (
     <div className='item'>
@@ -10,13 +10,13 @@ const {imageUrl, donatingUser, region, phoneNum, itemDesc, itemType} = props;
             <div className='container-sm'>
               <h6>תורם : {donatingUser}</h6>
               <br></br>
-              <h6>אזור : {region}</h6>
+              <h6>עיר : {city}</h6>
               <br></br>
               <h6>טלפון : {phoneNum}</h6>
               <br></br>
               <h6>תיאור פריט : {itemDesc}</h6>
               <br></br>
-              <h6>סוג פריט : {itemType}</h6>
+              <h6>שם פריט : {itemName}</h6>
             </div>
         </div>
     </div>
