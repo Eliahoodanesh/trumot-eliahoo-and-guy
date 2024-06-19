@@ -3,6 +3,7 @@ import { auth, db } from "../config/Firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import {useNavigate } from "react-router-dom";
+import { useAuth } from "./UseAuth";
 
 // פונקציית signUp 
 export const signUp = async (firstName, lastName, location, phoneNumber, email, username, password) => {
@@ -45,7 +46,8 @@ export const useLogout = () => {
 export const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
+    const currentUser = useAuth(); // שימוש ב-Hook של useAuth שיצרנו
 
     console.log(auth?.currentUser?.email); // Null check to prevent errors
 
@@ -53,12 +55,18 @@ export const Auth = () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             console.log("Signed in successfully");
-            navigate("/")
+            navigate("/");
         } catch (err) {
             console.error("Error signing in:", err.message);
             alert(err.message); // Show error message to the user
         }
     };
+
+    // אם המשתמש כבר מחובר, נפנה אותו חזרה לדף הראשי
+    if (currentUser) {
+        navigate("/");
+        return null;
+    }
 
     return (
         <div>
