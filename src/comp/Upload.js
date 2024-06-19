@@ -1,27 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import '../App.css'; // Import your CSS file
+import '../App.css';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { firestore, imageDb } from '../config/Firebase'; // Import firestore and imageDb from Firebase config
+import { firestore, imageDb } from '../config/Firebase';
 import { v4 as uuidv4 } from 'uuid';
+import { collection, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
+import { useCollection } from 'react-firebase-hooks/firestore';
 
 export default function Upload() {
   const [imagePreviews, setImagePreviews] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [cities, setCities] = useState([]);
-  const [itemName, setItemName] = useState(''); // State for item name input
-  const [itemDescription, setItemDescription] = useState(''); // State for item description input
-  const [selectedCity, setSelectedCity] = useState(''); // State for selected city ID
+  const [itemName, setItemName] = useState('');
+  const [itemDescription, setItemDescription] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
   const [uploadedUrls, setUploadedUrls] = useState([]);
-  const [phoneApproved, setPhoneApproved] = useState(false); // State for phone approval
+  const [phoneApproved, setPhoneApproved] = useState(false);
+  const [donorName, setDonorName] = useState('');
+  const [donorPhoneNumber, setDonorPhoneNumber] = useState('');
+  const [donorEmail, setDonorEmail] = useState('');
 
-  const apiUrl = "https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=1272";
+  const apiUrl =
+    'https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=1272';
 
   useEffect(() => {
     async function fetchCities() {
       try {
         const response = await fetch(apiUrl);
         const data = await response.json();
-        const cityRecords = data.result.records.map(record => ({ id: record.id, name: record['שם_ישוב'] }));
+        const cityRecords = data.result.records.map(record => ({
+          id: record._id,
+          name: record['שם_ישוב'],
+        }));
         setCities(cityRecords);
       } catch (error) {
         console.error('Error fetching cities:', error);
@@ -31,16 +40,15 @@ export default function Upload() {
     fetchCities();
   }, []);
 
-  const handleFileChange = (event) => {
-    const files = event.target.files; // Accessing the files from event.target.files
-    setSelectedFiles(files); // Store the selected files in state
+  const handleFileChange = event => {
+    const files = event.target.files;
+    setSelectedFiles(files);
     const newImagePreviews = [];
 
     Array.from(files).forEach(file => {
       const reader = new FileReader();
       reader.onloadend = () => {
         newImagePreviews.push(reader.result);
-        // Setting state after reading all files
         if (newImagePreviews.length === files.length) {
           setImagePreviews([...imagePreviews, ...newImagePreviews]);
         }
@@ -51,48 +59,55 @@ export default function Upload() {
 
   const handleUpload = async () => {
     try {
-      const batch = firestore.batch(); // Initialize a batch write
+      const batch = writeBatch(firestore);
       const uploadedUrls = [];
 
-      // Upload each file and store data in Firestore
       for (const file of selectedFiles) {
-        const imgRef = ref(imageDb, `uploadsImage/${uuidv4()}`);
-        await uploadBytes(imgRef, file);
-        const url = await getDownloadURL(imgRef);
-        uploadedUrls.push(url);
+        try {
+          console.log('Uploading file:', file.name);
+          const imgRef = ref(imageDb, `uploadsImage/${uuidv4()}`);
+          const snapshot = await uploadBytes(imgRef, file);
+          const url = await getDownloadURL(snapshot.ref);
+          uploadedUrls.push(url);
+          console.log('File uploaded:', url);
+        } catch (uploadError) {
+          console.error('Error uploading file:', file.name, uploadError);
+          throw new Error('File upload failed');
+        }
       }
 
-      // Determine phone status based on checkbox
       const phoneStatus = phoneApproved ? 'Your phone number' : 'מספר לא לפרסום';
 
-      // Store item data in Firestore
       const itemData = {
         itemName: itemName,
         itemDescription: itemDescription,
-        cityId: selectedCity,
+        city: selectedCity,
         imageUrls: uploadedUrls,
         phoneStatus: phoneStatus,
-        createdAt: firestore.FieldValue.serverTimestamp() // Timestamp of when the item was uploaded
+        donorName: donorName,
+        donorPhoneNumber: phoneApproved ? donorPhoneNumber : 'מספר לא לפרסום',
+        donorEmail: donorEmail,
+        createdAt: serverTimestamp(),
       };
 
-      const itemsCollection = firestore.collection('items');
-      const newItemRef = itemsCollection.doc(); // Automatically generate a new document ID
-      await batch.set(newItemRef, itemData);
+      const itemsCollection = collection(firestore, 'items');
+      const newItemRef = doc(itemsCollection);
+      batch.set(newItemRef, itemData);
 
-      await batch.commit(); // Commit the batch write to Firestore
+      await batch.commit();
       setUploadedUrls(uploadedUrls);
       alert('All files uploaded successfully!');
     } catch (error) {
-      console.error('Error uploading files:', error);
-      alert('Failed to upload files. Please try again.');
+      console.error('Error during Firestore write operation:', error);
+      alert('Failed to write item data. Please try again.');
     }
   };
 
-  const handleCityChange = (event) => {
+  const handleCityChange = event => {
     setSelectedCity(event.target.value);
   };
 
-  const handlePhoneApproval = (event) => {
+  const handlePhoneApproval = event => {
     setPhoneApproved(event.target.checked);
   };
 
@@ -105,72 +120,121 @@ export default function Upload() {
         <div className='row'>
           <div className='col-md-3'>
             <div className='upload-container'>
-              <input 
-                id='file-upload' 
-                type='file' 
-                accept='image/*' 
-                multiple 
-                onChange={handleFileChange} 
-                style={{ display: 'none' }} // Hide the default file input
+              <input
+                id='file-upload'
+                type='file'
+                accept='image/*'
+                multiple
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
               />
-              <label htmlFor='file-upload' className='btn btn-primary'>העלה תמונות</label>
-              {imagePreviews.length > 0 && imagePreviews.map((preview, index) => (
-                <img key={index} src={preview} alt={`Uploaded ${index}`} className='uploaded-image' />
-              ))}
+              <label htmlFor='file-upload' className='btn btn-primary'>
+                העלה תמונות
+              </label>
+              {imagePreviews.length > 0 &&
+                imagePreviews.map((preview, index) => (
+                  <img
+                    key={index}
+                    src={preview}
+                    alt={`Uploaded ${index}`}
+                    className='uploaded-image'
+                  />
+                ))}
             </div>
           </div>
           <div className='col-md-9'>
             <div className='row'>
               <div className='col-md-4'>
-                <input 
-                  type='text' 
-                  className='form-control' 
-                  placeholder='שם פריט' 
-                  value={itemName} 
-                  onChange={(e) => setItemName(e.target.value)} 
+                <input
+                  type='text'
+                  className='form-control'
+                  placeholder='שם פריט'
+                  value={itemName}
+                  onChange={e => setItemName(e.target.value)}
                 />
               </div>
               <div className='col-md-4'>
-                <input 
-                  type='text' 
-                  className='form-control' 
-                  placeholder='תיאור' 
-                  value={itemDescription} 
-                  onChange={(e) => setItemDescription(e.target.value)} 
+                <input
+                  type='text'
+                  className='form-control'
+                  placeholder='תיאור'
+                  value={itemDescription}
+                  onChange={e => setItemDescription(e.target.value)}
                 />
               </div>
               <div className='col-md-4'>
-                <select 
-                  className='form-control' 
-                  value={selectedCity} 
+                <select
+                  className='form-control'
+                  value={selectedCity}
                   onChange={handleCityChange}
                 >
-                  <option value='' disabled defaultValue>בחר אזור בארץ</option>
+                  <option value='' disabled defaultValue>
+                    בחר עיר
+                  </option>
                   {cities.map(city => (
-                    <option key={city.id} value={city.id}>{city.name}</option>
+                    <option key={city.id} value={city.name}>
+                      {city.name}
+                    </option>
                   ))}
                 </select>
               </div>
             </div>
+            <div className='form-group'>
+              <input
+                type='text'
+                className='form-control'
+                id='donorName'
+                placeholder='שם התורם'
+                value={donorName}
+                onChange={e => setDonorName(e.target.value)}
+              />
+            </div>
+            <div className='form-check'>
+              <label
+                className='form-check-label'
+                htmlFor='phone-approval'
+              >
+                האם להציג את מספר הטלפון שלך?
+              </label>
+              <input
+                type='checkbox'
+                className='form-check-input'
+                id='phone-approval'
+                checked={phoneApproved}
+                onChange={handlePhoneApproval}
+              />
+            </div>
+            {phoneApproved && (
+              <div className='form-group'>
+                <input
+                  type='tel'
+                  className='form-control'
+                  id='donorPhoneNumber'
+                  placeholder='מספר הטלפון'
+                  value={donorPhoneNumber}
+                  onChange={e => setDonorPhoneNumber(e.target.value)}
+                />
+              </div>
+            )}
+            {!phoneApproved && (
+              <div className='form-group'>
+                <input
+                  type='email'
+                  className='form-control'
+                  id='donorEmail'
+                  placeholder='כתובת הדוא"ל שלך'
+                  value={donorEmail}
+                  onChange={e => setDonorEmail(e.target.value)}
+                />
+              </div>
+            )}
+            <div className='d-flex justify-content-center'>
+              <button className='btn btn-primary' onClick={handleUpload}>
+                העלה פריט
+              </button>
+            </div>
           </div>
         </div>
-        <br />
-        <input 
-          type='checkbox' 
-          id='approvePhone' 
-          checked={phoneApproved} 
-          onChange={handlePhoneApproval} 
-        />
-        <label htmlFor='approvePhone'>מאשר שימוש במספר הטלפון שלי</label>
-        <br />
-        <div className='text-center'>
-          <button type='button' className='btn btn-primary' onClick={handleUpload}>העלה פריט</button>
-        </div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
       </div>
     </div>
   );

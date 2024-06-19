@@ -1,22 +1,63 @@
-import React from 'react'
-import ItemDisplay from './ItemDisplay'
+import React, { useEffect, useState } from 'react';
+import { firestore, collection, getDocs } from '../config/Firebase';
+import ItemDisplay from './ItemDisplay';
 
 export default function ItemList() {
+  const [items, setItems] = useState([]);
+  const [users, setUsers] = useState({});
+
+  useEffect(() => {
+    const fetchItemsAndUsers = async () => {
+      try {
+        const itemsCollectionRef = collection(firestore, 'items');
+        const usersCollectionRef = collection(firestore, 'users');
+
+        const itemsSnapshot = await getDocs(itemsCollectionRef);
+        const usersSnapshot = await getDocs(usersCollectionRef);
+
+        const itemsData = itemsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        const usersData = {};
+        usersSnapshot.forEach(doc => {
+          usersData[doc.id] = doc.data();
+        });
+
+        setItems(itemsData);
+        setUsers(usersData);
+      } catch (error) {
+        console.error('Error fetching items and users:', error);
+      }
+    };
+
+    fetchItemsAndUsers();
+  }, []);
+
+  const handleEmailUser = (email) => {
+    window.location.href = `mailto:${email}`;
+  };
+
   return (
     <div className='container-fluid'>
       <div className='container'>
         <div className='row'>
-        <div className='col-md-4'>
-          <ItemDisplay imageUrl={"https://cdn11.bigcommerce.com/s-fj5u5hhzyb/images/stencil/1280x1280/products/27344/15554/NEW_Boucle_Occasional_Chair_Lores_01__99432.1675195686.jpg?c=1"}/>
-          </div>
-          <div className='col-md-4'>
-          <ItemDisplay imageUrl={"https://www.thespruce.com/thmb/65l9i7kdcdic4mVKvKykx1Bq6bs=/3360x0/filters:no_upscale():max_bytes(150000):strip_icc()/signs-to-replace-your-couch-4165258-hero-5266fa7b788c41f6a02f24224a5de29b.jpg"}/>
-          </div>
-          <div className='col-md-4'>
-          <ItemDisplay imageUrl={"https://api.fantasticfurniture.com.au/medias/Product-Detail-Spartacus-BDILTBRNDOOOMDFOAK-LIF-CONTAINER-original-FantasticFurniture-WF?context=bWFzdGVyfGltYWdlc3wyODQyMjN8aW1hZ2UvanBlZ3xoMmMvaDcxLzEwMDI4MzUwMjEwMDc4L1Byb2R1Y3QtRGV0YWlsLVNwYXJ0YWN1c19CRElMVEJSTkRPT09NREZPQUtfTElGX0NPTlRBSU5FUl9vcmlnaW5hbF9GYW50YXN0aWNGdXJuaXR1cmUtV0Z8MjY2ZWJlMjU2NDRiMmY5Zjg5MzFlYTFiOWNmZmMzMDE3NzM1YTZiZGVmNmNmNWUyMTM3MDgwODM0NTA4NDMyMQ"}/>
-        </div>
+          {items.map(item => (
+            <div className='col-md-4' key={item.id}>
+              <ItemDisplay
+                imageUrl={item.imageUrls[0]} // Assuming imageUrls is an array and we take the first image
+                donatingUser={item.donorName}
+                city={item.city}
+                phoneNum={item.phoneStatus === 'Your phone number' ? item.donorPhoneNumber : 'מספר לא לפרסום'}
+                itemDesc={item.itemDescription}
+                itemName={item.itemName}
+                onEmailUser={() => handleEmailUser(item.donorEmail)}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
-  )
+  );
 }
