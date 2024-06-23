@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { signUp } from '../functionsFirebase/AuthUser'; // עדכון הייבוא
+import { signUp } from '../functionsFirebase/AuthUser'; // ודא שהייבוא נכון
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
   const [cities, setCities] = useState([]);
@@ -7,13 +8,14 @@ function Register() {
   const [lastName, setLastName] = useState('');
   const [location, setLocation] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState(''); // הוספת state לאימייל
+  const [email, setEmail] = useState(''); 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const apiUrl = "https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=1272";
 
+  const navigate = useNavigate();
   useEffect(() => {
     async function fetchCities() {
       try {
@@ -31,13 +33,15 @@ function Register() {
 
   const handleSignUp = async () => {
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      alert("הסיסמאות אינן תואמות!");
       return;
     }
     try {
-      await signUp(firstName, lastName, location, phoneNumber, email, username, password); // שינוי הפרמטרים המועברים ל-signUp
+      await signUp(firstName, lastName, location, phoneNumber, email, username, password); 
+      alert("משתמש נרשם בהצלחה");
+      navigate("/Login");
     } catch (error) {
-      console.error("Error signing up:", error);
+      console.error("שגיאה בהרשמה:", error);
     }
   };
 
@@ -83,7 +87,7 @@ function Register() {
           <div className='col-sm-6'>
             <label>
               אימייל:
-              <input type='email' className='form-control' value={email} onChange={(e) => setEmail(e.target.value)} /> {/* שדה לאימייל */}
+              <input type='email' className='form-control' value={email} onChange={(e) => setEmail(e.target.value)} />
             </label>
           </div>
           <div className='col-sm-6'>

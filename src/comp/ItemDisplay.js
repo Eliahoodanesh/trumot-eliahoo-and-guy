@@ -8,7 +8,7 @@ export default function ItemDisplay({ imageUrl, donatingUser, city, phoneNum, it
         <div className='container-sm'>
           <h6>תורם: {donatingUser}</h6>
           <br />
-          <h6>עיר: {city}</h6>
+          <h6>מיקום איסוף: {city}</h6>
           <br />
           <h6>טלפון: {phoneNum}</h6>
           <br />

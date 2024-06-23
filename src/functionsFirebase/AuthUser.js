@@ -8,11 +8,10 @@ import { useAuth } from "./UseAuth";
 // פונקציית signUp 
 export const signUp = async (firstName, lastName, location, phoneNumber, email, username, password) => {
     try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password); // Creating user with email and password
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password); // יצירת משתמש
         const user = userCredential.user;
-        
 
-        // Saving user data to Firestore
+        // שמירת פרטי המשתמש ב-Firestore
         await setDoc(doc(db, "users", user.uid), {
             firstName,
             lastName,
@@ -22,10 +21,10 @@ export const signUp = async (firstName, lastName, location, phoneNumber, email, 
             email: user.email,
             createdAt: new Date(),
         });
-        
-        console.log("User registered and data saved");
+
+        console.log("משתמש נרשם והמידע נשמר");
     } catch (error) {
-        console.error("Error signing up:", error);
+        console.error("שגיאה בהרשמה:", error);
         throw error;
     }
 };
