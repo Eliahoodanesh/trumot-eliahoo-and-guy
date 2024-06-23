@@ -1,13 +1,14 @@
-import React from 'react'
+import React from 'react';
+import "../App.css";
 
 export default function Footer() {
   return (
-    <div className='container text-center'>
-    <footer>
+    <footer className="footer">
+      <div className='container text-center'>
         כל הזכויות שמורות &copy; לאליהו דאנש ולגיא ברכה
-      <hr></hr>
-      פותח בשנת 2024
-      </footer>
-    </div>
-  )
+        <hr />
+        פותח בשנת 2024
+      </div>
+    </footer>
+  );
 }

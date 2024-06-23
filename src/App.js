@@ -18,25 +18,26 @@ function App() {
   const [showHeader, setShowHeader] = useState(true);
 
   useEffect(() => {
-    // List of paths where the Header should be hidden
     const noHeaderPaths = ['/MyForm', '/Login', '/Register'];
     setShowHeader(!noHeaderPaths.includes(location.pathname));
   }, [location]);
 
   return (
-    <div className='container'>
+    <div className="wrapper">
       {showHeader && <Header />}
-      <Routes>
-        <Route path='/' element={<Homepage />} />
-        <Route path='/About' element={<About />} />
-        <Route path='/Upload' element={<Upload />} />
-        <Route path='/Contact' element={<Contact />} />
-        <Route path='/Query' element={<Query />} />
-        <Route path='/MyForm' element={<MyForm />} />
-        <Route path='/Login' element={<Login />} />
-        <Route path='/Register' element={<Register />} />
-        <Route path='/*' element={<Error />} />
-      </Routes>
+      <div className="content">
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/Upload" element={<Upload />} />
+          <Route path="/Contact" element={<Contact />} />
+          <Route path="/Query" element={<Query />} />
+          <Route path="/MyForm" element={<MyForm />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Register" element={<Register />} />
+          <Route path="/*" element={<Error />} />
+        </Routes>
+      </div>
       <Footer />
     </div>
   );

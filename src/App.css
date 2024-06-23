@@ -122,16 +122,32 @@
   align-items: center;
 }
 
-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
+.footer {
   background-color: #333;
   color: white;
   text-align: center;
   padding: 10px;
+  margin-top: auto;
 }
+
 
 body{
   background-color:#c5e2ff6e;
