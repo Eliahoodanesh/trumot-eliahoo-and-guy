@@ -1,27 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import photo_trumot from '../img/photo_trumot.jpg';
 import '../App.css';
-import { signOut } from 'firebase/auth';
 import { useLogout } from '../functionsFirebase/AuthUser';
-import { auth } from '../config/Firebase'; // Ensure correct import of auth
-
+import { auth, firestore } from '../config/Firebase'; // Ensure correct import of auth and firestore
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function Header({ onLogout }) {
+  const [username, setUsername] = useState('');
   const navigate = useNavigate();
-  const {logout} = useLogout();
+  const { logout } = useLogout();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(firestore, 'users', user.uid));
+          if (userDoc.exists()) {
+            setUsername(userDoc.data().username);
+          }
+        } catch (err) {
+          console.error('Error fetching username:', err);
+        }
+      } else {
+        setUsername(''); // Clear username if user is logged out
+      }
+    });
+  
+    return () => unsubscribe();
+  }, []);
+  
+
   const handleSignOut = async () => {
     try {
-        await logout();
-        navigate("/MyForm"); // Redirect to MyForm page after logout
-        if (onLogout) {
-            onLogout();
-        }
+      await logout();
+      navigate("/MyForm"); // Redirect to MyForm page after logout
+      if (onLogout) {
+        onLogout();
+      }
     } catch (err) {
-        console.error('Error signing out:', err);
-        alert('Failed to sign out. Please try again.');
+      console.error('Error signing out:', err);
+      alert('Failed to sign out. Please try again.');
     }
-};
+  };
 
   return (
     <div className='container'>
@@ -38,8 +59,9 @@ export default function Header({ onLogout }) {
           <span className="mx-2"> </span>
           <Link to="/Query" className='custom-link'>חפש</Link>
         </div>
-        <div className="flex-grow-1 d-flex justify-content-center justify-content-md-end">
-        <button className="btn btn-primary mx-3" onClick={handleSignOut}>התנתק</button>
+        <div className="flex-grow-1 d-flex justify-content-center justify-content-md-end align-items-center">
+          {username && <span className="mx-3">שלום, {username}</span>}
+          <button className="btn btn-primary mx-3" onClick={handleSignOut}>התנתק</button>
         </div>
       </header>
     </div>
