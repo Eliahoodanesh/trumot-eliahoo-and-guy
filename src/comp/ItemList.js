@@ -44,15 +44,17 @@ export default function ItemList() {
       <div className='container'>
         <div className='row'>
           {items.map(item => (
-            <div className='col-md-4 mb-4' key={item.id}> {/* Added mb-4 for margin bottom */}
+            <div className='col-md-4 mb-4' style={{fontSize: '0.8rem'}} key={item.id}> {/* Added mb-4 for margin bottom */}
               <ItemDisplay
-                imageUrl={item.imageUrls[0]} // Assuming imageUrls is an array and we take the first image
+                imageUrl={item.imageUrl}
                 donatingUser={item.donorName}
                 city={item.city}
-                phoneNum={item.phoneStatus === 'Your phone number' ? item.donorPhoneNumber : 'מספר לא לפרסום'}
+                phoneNum={item.donorPhoneNumber}
                 itemDesc={item.itemDescription}
                 itemName={item.itemName}
-                onEmailUser={() => handleEmailUser(item.donorEmail)}
+                onEmailUser={handleEmailUser}
+                donorEmail={item.donorEmail}
+                imageUrls={item.imageUrls}
               />
             </div>
           ))}
