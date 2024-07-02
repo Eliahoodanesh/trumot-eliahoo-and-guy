@@ -1,11 +1,17 @@
-// ItemDisplay.js
 import React from 'react';
+import { Carousel } from 'react-bootstrap'; // או כל ספריית קרוסלה אחרת שתשתמש בה
 
-export default function ItemDisplay({ imageUrl, donatingUser, city, phoneNum, itemDesc, itemName, onEmailUser, donorEmail }) {
+export default function ItemDisplay({ imageUrls, donatingUser, city, phoneNum, itemDesc, itemName, onEmailUser, donorEmail }) {
   return (
-    <div className='item'>
+    <div className='item mb-3'>
       <div className='col-md d-flex align-items-center border p-2'>
-        <img src={imageUrl} alt={itemName} className='fluid-start me-2 w-25' />
+        <Carousel>
+          {imageUrls && imageUrls.map((url, index) => (
+            <Carousel.Item key={index}>
+              <img src={url} alt={itemName} className='d-block w-100 img-fluid' style={{ maxHeight: '300px', objectFit: 'cover' }} />
+            </Carousel.Item>
+          ))}
+        </Carousel>
         <div className='container-sm'>
           <h6>תורם: {donatingUser}</h6>
           <br />

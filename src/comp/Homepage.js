@@ -1,8 +1,10 @@
 import React from 'react';
-import ItemDisplay from './ItemDisplay';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../functionsFirebase/UseAuth'; // הוספת import
 import ItemList from './ItemList';
 
 function HomePage() {
+
   return (
     <div className='container-fluid'>
         <div className='container content-container'>

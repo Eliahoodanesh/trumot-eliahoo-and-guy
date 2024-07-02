@@ -205,16 +205,22 @@ export default function Upload() {
               />
             </div>
             {phoneApproved && (
-              <div className='form-group'>
-                <input
-                  type='tel'
-                  className='form-control'
-                  id='donorPhoneNumber'
-                  placeholder='מספר הטלפון'
-                  value={donorPhoneNumber}
-                  onChange={e => setDonorPhoneNumber(e.target.value)}
-                />
-              </div>
+             <div className='form-group'>
+              אנא הכנס מספרים בלבד, ללא תווים נוספים.
+             <input
+               type='tel'
+               className='form-control'
+               id='donorPhoneNumber'
+               placeholder='מספר הטלפון'
+               value={donorPhoneNumber}
+               maxLength='10' // הגבלת אורך הקלט
+               onChange={e => {
+                 // מניעת קלט של תווים לא רצויים
+                 const inputVal = e.target.value.replace(/[^\d-]/g, '').slice(0, 10);
+                 setDonorPhoneNumber(inputVal);
+               }}
+             />
+           </div>
             )}
             {!phoneApproved && (
               <div className='form-group'>

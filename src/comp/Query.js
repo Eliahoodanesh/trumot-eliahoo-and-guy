@@ -1,9 +1,8 @@
-// Query.js
 import React, { useState, useEffect } from 'react';
-import { Button, Container, Row, Col, Card, Form } from 'react-bootstrap';
+import { Button, Container, Row, Col, Card, Form, Carousel } from 'react-bootstrap';
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { firestore } from '../config/Firebase'; // Adjust the import according to your project structure
-import ItemDisplay from './ItemDisplay'; // Adjust the import according to your project structure
+import { firestore } from '../config/Firebase';
+import ItemDisplay from './ItemDisplay';
 
 export default function Query() {
   const [cities, setCities] = useState([]);
@@ -27,24 +26,35 @@ export default function Query() {
   }, []);
 
   const handleSearch = async () => {
-    if (selectedCity && searchTerm) {
-      try {
-        const itemsCollection = collection(firestore, 'items');
-        const q = query(
+    try {
+      const itemsCollection = collection(firestore, 'items');
+      let q;
+
+      if (selectedCity && searchTerm) {
+        q = query(
           itemsCollection,
           where('city', '==', selectedCity),
           where('itemName', '>=', searchTerm),
           where('itemName', '<=', searchTerm + '\uf8ff')
         );
-        const querySnapshot = await getDocs(q);
-        const searchResults = querySnapshot.docs.map(doc => doc.data());
-        setResults(searchResults);
-        console.log('Search Results:', searchResults);
-      } catch (error) {
-        console.error('Error searching items:', error);
+      } else if (selectedCity) {
+        q = query(itemsCollection, where('city', '==', selectedCity));
+      } else if (searchTerm) {
+        q = query(
+          itemsCollection,
+          where('itemName', '>=', searchTerm),
+          where('itemName', '<=', searchTerm + '\uf8ff')
+        );
+      } else {
+        q = itemsCollection;
       }
-    } else {
-      console.log('Please select a city and enter a search term');
+
+      const querySnapshot = await getDocs(q);
+      const searchResults = querySnapshot.docs.map(doc => doc.data());
+      setResults(searchResults);
+      console.log('Search Results:', searchResults);
+    } catch (error) {
+      console.error('Error searching items:', error);
     }
   };
 
@@ -97,16 +107,37 @@ export default function Query() {
               {results.length > 0 ? (
                 results.map((result, index) => (
                   <Col key={index} sm={12} className='mb-2'>
-                    <ItemDisplay
-                      imageUrl={result.imageUrls[0]} // Assuming imageUrls is an array
-                      donatingUser={result.donorName}
-                      city={result.city}
-                      phoneNum={result.phoneStatus}
-                      itemDesc={result.itemDescription}
-                      itemName={result.itemName}
-                      onEmailUser={handleEmailUser}
-                      donorEmail={result.donorEmail}
-                    />
+                    <Card className="mb-3">
+                      <Card.Body>
+                        <Row>
+                          <Col sm={6}>
+                            <ItemDisplay
+                              donatingUser={result.donorName}
+                              city={result.city}
+                              phoneNum={result.phoneStatus === 'Your phone number' ? result.donorPhoneNumber : 'מספר לא לפרסום'}
+                              itemDesc={result.itemDescription}
+                              itemName={result.itemName}
+                              onEmailUser={() => handleEmailUser(result.donorEmail)}
+                            />
+                          </Col>
+                          <Col sm={6}>
+                            {result.imageUrls && result.imageUrls.length > 0 && (
+                              <Carousel className="mt-3">
+                                {result.imageUrls.map((image, idx) => (
+                                  <Carousel.Item key={idx}>
+                                    <img
+                                      className="d-block w-100"
+                                      src={image}
+                                      alt={`Slide ${idx}`}
+                                    />
+                                  </Carousel.Item>
+                                ))}
+                              </Carousel>
+                            )}
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
                   </Col>
                 ))
               ) : (
