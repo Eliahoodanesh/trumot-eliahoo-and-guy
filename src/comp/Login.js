@@ -8,20 +8,13 @@ function Login() {
       <h1>התחברות</h1>
       <br />
       <Auth/>
-      <div className="form-check">
-        <input className="form-check-input" type="radio" value="user" id="flexRadioDefault1" name="flexRadioDefault" />
-        <label className="form-check-label" htmlFor="flexRadioDefault1">
-          משתמש רגיל
-        </label>
+      <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"/>
+      <label class="form-check-label" for="flexSwitchCheckDefault">אני מנהל</label>
       </div>
-      <div className="form-check">
-        <input className="form-check-input" type="radio" value="admin" id="flexRadioDefault2" name="flexRadioDefault" checked />
-        <label className="form-check-label" htmlFor="flexRadioDefault2">
-          מנהל
-        </label>
-      </div>
-      <button>כניסה</button>
-      <button>שכחתי סיסמא</button>
+      <Link to="/MyForm">
+        <button>חזור</button>
+      </Link>
     </div>
   );
 }

@@ -39,7 +39,7 @@ function Register() {
     try {
       await signUp(firstName, lastName, location, phoneNumber, email, username, password); 
       alert("משתמש נרשם בהצלחה");
-      navigate("/Login");
+      navigate("/");
     } catch (error) {
       console.error("שגיאה בהרשמה:", error);
     }

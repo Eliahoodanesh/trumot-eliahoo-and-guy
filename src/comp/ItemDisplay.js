@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function ItemDisplay({ imageUrl, donatingUser, city, phoneNum, itemDesc, itemName, onEmailUser, donorEmail }) {
   return (
-    <div className='item'>
+    <div className='item mb-3'> {/* Added mb-3 for margin bottom */}
       <div className='col-md d-flex align-items-center border p-2'>
         <img src={imageUrl} alt={itemName} className='fluid-start me-2 w-25' />
         <div className='container-sm'>

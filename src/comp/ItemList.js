@@ -44,7 +44,7 @@ export default function ItemList() {
       <div className='container'>
         <div className='row'>
           {items.map(item => (
-            <div className='col-md-4' key={item.id}>
+            <div className='col-md-4 mb-4' key={item.id}> {/* Added mb-4 for margin bottom */}
               <ItemDisplay
                 imageUrl={item.imageUrls[0]} // Assuming imageUrls is an array and we take the first image
                 donatingUser={item.donorName}

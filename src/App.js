@@ -18,9 +18,9 @@ function App() {
   const [showHeader, setShowHeader] = useState(true);
 
   useEffect(() => {
-    const noHeaderPaths = ['/MyForm', '/Login', '/Register'];
-    setShowHeader(!noHeaderPaths.includes(location.pathname));
-  }, [location]);
+    const noHeaderPaths = ['/MyForm', '/Login', '/Register'].map(path => path.toLowerCase());
+    setShowHeader(!noHeaderPaths.includes(location.pathname.toLowerCase()));
+  }, [location.pathname]);
 
   return (
     <div className="wrapper">
