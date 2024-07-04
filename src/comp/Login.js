@@ -8,10 +8,6 @@ function Login() {
       <h1>התחברות</h1>
       <br />
       <Auth/>
-      <div class="form-check form-switch">
-      <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"/>
-      <label class="form-check-label" for="flexSwitchCheckDefault">אני מנהל</label>
-      </div>
       <Link to="/MyForm">
         <button>חזור</button>
       </Link>
