@@ -5,28 +5,82 @@ import { setDoc, doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./UseAuth";
 
-export const signUp = async (firstName, lastName, location, phoneNumber, email, username, password, isAdmin) => {
+const isEmailInUse = async (email) => {
+    try {
+        const methods = await auth.fetchSignInMethodsForEmail(email);
+        return methods.length > 0;
+    } catch (error) {
+        console.error("Error checking email:", error);
+        throw error;
+    }
+};
+
+export const signUp = async (email, password, additionalData) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
+        // Create user document in Firestore
         await setDoc(doc(db, "users", user.uid), {
-            firstName,
-            lastName,
-            location,
-            phoneNumber,
-            username,
-            email: user.email,
-            isAdmin,
-            createdAt: new Date(),
+            email,
+            ...additionalData,
+            isAdmin: false, // Default to false or based on additionalData
+            createdAt: new Date()
         });
 
-        console.log("משתמש נרשם והמידע נשמר");
-    } catch (error) {
-        console.error("שגיאה בהרשמה:", error);
-        throw error;
+        console.log("User signed up and document created successfully");
+        return user;
+    } catch (err) {
+        console.error("Error signing up:", err.message);
+        alert(err.message);
     }
 };
+
+
+export const signIn = async (email, password, isAdmin, navigate) => {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        console.log("Signed in user:", user.uid);
+
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+            console.log("User data:", userData);
+
+            if (isAdmin && userData.isAdmin) {
+                console.log("Admin signed in successfully");
+                navigate("/admin-dashboard");
+            } else if (!isAdmin) {
+                console.log("User signed in successfully");
+                navigate("/");
+            } else {
+                throw new Error("User is not an admin");
+            }
+        } else {
+            console.error("User document does not exist in Firestore for user ID:", user.uid);
+            throw new Error("User does not exist");
+        }
+    } catch (err) {
+        console.error("Error signing in:", err.message);
+        alert(err.message);
+    }
+};
+
+
+export const forgotPassword = async (email) => {
+    try {
+        await sendPasswordResetEmail(auth, email);
+        alert("נשלחה הודעת איפוס סיסמא לאימייל שלך");
+    } catch (error) {
+        console.error("שגיאה בשליחת הודעת איפוס סיסמא:", error.message);
+        alert(error.message);
+    }
+};
+
 
 export const useLogout = () => {
     const logout = async () => {
@@ -38,7 +92,7 @@ export const useLogout = () => {
         }
     };
     return { logout };
-}
+};
 
 export const Auth = () => {
     const navigate = useNavigate();
@@ -53,82 +107,27 @@ export const Auth = () => {
         }
     }, [currentUser, navigate]);
 
-    const signIn = async (email, password) => {
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-
-            const userRef = doc(db, "users", user.uid);
-            const userSnap = await getDoc(userRef);
-
-            if (userSnap.exists()) {
-                const userData = userSnap.data();
-                if (isAdmin && userData.isAdmin) {
-                    console.log("Admin signed in successfully");
-                    navigate("/admin-dashboard");
-                } else if (!isAdmin) {
-                    console.log("User signed in successfully");
-                    navigate("/");
-                } else {
-                    throw new Error("User is not an admin");
-                }
-            } else {
-                throw new Error("User does not exist");
-            }
-        } catch (err) {
-            console.error("Error signing in:", err.message);
-            alert(err.message);
-        }
+    const handleSignUp = async () => {
+        const additionalData = { isAdmin }; // Include additional data if needed
+        await signUp(email, password, additionalData);
     };
 
-    const forgotPassword = async (email) => {
-        try {
-            await sendPasswordResetEmail(auth, email);
-            alert("נשלחה הודעת איפוס סיסמא לאימייל שלך");
-        } catch (error) {
-            console.error("שגיאה בשליחת הודעת איפוס סיסמא:", error.message);
-            alert(error.message);
-        }
+    const handleSignIn = async () => {
+        await signIn(email, password, isAdmin, navigate);
     };
 
     return (
         <div>
-            {currentUser ? (
-                <p>אתה כבר מחובר.</p>
-            ) : (
-                <>
-                    <label>מייל</label>
-                    <input
-                        placeholder="Email..."
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="form-control"
-                    />
-                    <label>סיסמא</label>
-                    <input
-                        placeholder="Password..."
-                        type="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="form-control"
-                    />
-                    <div className="text-center">
-                        <button onClick={() => signIn(email, password)}>התחבר</button>
-                    </div>
-                    <div className="text-center">
-                        <button onClick={() => forgotPassword(email)}>שכחתי סיסמא</button>
-                    </div>
-                    <div className="form-check form-switch">
-                        <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="flexSwitchCheckDefault"
-                            onChange={() => setIsAdmin(!isAdmin)}
-                        />
-                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-                            אני מנהל
-                        </label>
-                    </div>
-                </>
-            )}
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+            <label>
+                <input type="checkbox" checked={isAdmin} onChange={() => setIsAdmin(!isAdmin)} />
+                אני מנהל
+            </label>
+            <button onClick={handleSignIn}>התחבר</button>
+            <button onClick={handleSignUp}>הירשם</button>
         </div>
     );
 };
+
+export default Auth;

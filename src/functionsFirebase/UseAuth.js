@@ -1,27 +1,18 @@
 import React from 'react'
-import { useEffect } from "react";
-import { auth } from "../config/Firebase"; // אמורה להיות פונקציית auth
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../config/Firebase';
 
-// פונקציית useAuth
 export const useAuth = () => {
-    const navigate = useNavigate();
-    const currentUser = auth.currentUser;
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            if (user) {
-                // המשתמש מחובר
-                console.log("משתמש מחובר:", user.email);
-            } else {
-                // אין משתמש מחובר
-                console.log("אין משתמש מחובר");
-                navigate("/login"); // ניתוב לדף ההתחברות אם אין משתמש מחובר
-            }
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setCurrentUser(user);
         });
 
-        return unsubscribe;
-    }, [navigate]);
+        return () => unsubscribe();
+    }, []);
 
     return currentUser;
 };
