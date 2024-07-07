@@ -58,6 +58,8 @@ export default function Header({ onLogout }) {
           <Link to="/Contact" className='custom-link'>צור קשר</Link>
           <span className="mx-2"> </span>
           <Link to="/Query" className='custom-link'>חפש</Link>
+          <span className="mx-2"> </span>
+          <Link to="/Managers" className='custom-link'>כניסה למנהלים</Link>
         </div>
         <div className="flex-grow-1 d-flex justify-content-center justify-content-md-end align-items-center">
           {username && <span className="mx-3">שלום, {username}</span>}
