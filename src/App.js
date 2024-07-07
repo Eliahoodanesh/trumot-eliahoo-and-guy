@@ -12,14 +12,14 @@ import Upload from './comp/Upload';
 import Query from './comp/Query';
 import Footer from './comp/Footer';
 import Error from './comp/Error';
-import AdminDashboard from './functionsFirebase/AdminDashboard';
+import Managers from './comp/Managers';
 
 function App() {
   const location = useLocation();
   const [showHeader, setShowHeader] = useState(true);
 
   useEffect(() => {
-    const noHeaderPaths = ['/MyForm', '/Login', '/Register','/Admin-Dashboard'].map(path => path.toLowerCase());
+    const noHeaderPaths = ['/MyForm', '/Login', '/Register'].map(path => path.toLowerCase());
     setShowHeader(!noHeaderPaths.includes(location.pathname.toLowerCase()));
   }, [location.pathname]);
 
@@ -36,7 +36,7 @@ function App() {
           <Route path="/MyForm" element={<MyForm />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
-          <Route path="/Admin-Dashboard/*" element={<AdminDashboard />} />
+          <Route path="/Managers" element={<Managers />} />
           <Route path="/*" element={<Error />} />
         </Routes>
       </div>
