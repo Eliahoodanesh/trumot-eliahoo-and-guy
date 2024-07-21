@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { firestore, collection, getDocs } from '../config/Firebase';
 import ItemDisplay from './ItemDisplay';
+import '../App.css';
+
 
 export default function ItemList() {
   const [items, setItems] = useState([]);
@@ -44,7 +46,7 @@ export default function ItemList() {
       <div className='container'>
         <div className='row'>
           {items.map(item => (
-            <div className='col-md-4 mb-4' style={{fontSize: '0.8rem'}} key={item.id}> {/* Added mb-4 for margin bottom */}
+            <div className='col-md-4 mb-4' key={item.id}>
               <ItemDisplay
                 imageUrl={item.imageUrl}
                 donatingUser={item.donorName}

@@ -153,9 +153,21 @@ body{
   background-color:#c5e2ff6e;
 }
 
-.item{
-  background-color: white;
+.item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
+.carousel img {
+  max-height: 200px;
+  object-fit: contain;
+}
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
 .content-container {
   margin-top: 20px; /* Adjust the value as needed */
 }
