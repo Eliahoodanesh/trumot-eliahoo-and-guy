@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import photo_trumot from '../img/photo_trumot.jpg';
+import React, { useState, useEffect } from 'react';
 
-export default function About() {
+export default function AboutEditor() {
   const [aboutContent, setAboutContent] = useState('');
 
   useEffect(() => {
@@ -10,13 +9,22 @@ export default function About() {
     setAboutContent(storedAboutContent);
   }, []);
 
+  const handleSave = () => {
+    // Save the about content to localStorage or backend
+    localStorage.setItem('aboutContent', aboutContent);
+    console.log('Saving about content:', aboutContent);
+  };
+
   return (
-    <div className='container'>
-      <h2>אודות האתר</h2>
-      <p>{aboutContent}</p>
-      <div className='container text-center'>
-        <img src={photo_trumot} alt='logo' className='img-about'></img>
-      </div>
+    <div className="container">
+      <h2>ערוך אודות</h2>
+      <textarea
+        className="form-control"
+        rows="10"
+        value={aboutContent}
+        onChange={(e) => setAboutContent(e.target.value)}
+      />
+      <button className="btn btn-primary mt-3" onClick={handleSave}>שמור</button>
     </div>
   );
 }
