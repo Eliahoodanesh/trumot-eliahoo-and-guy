@@ -4,6 +4,8 @@ import Tabs from 'react-bootstrap/Tabs';
 import ContactEditor from './ContactEditor';
 import AboutEditor from './AboutEditor';
 import DeleteUsers from './DeleteUsers';
+import Report from './Report';
+import DeleteUpload from './DeleteUpload';
 
 export default function Managers() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -55,6 +57,12 @@ export default function Managers() {
         </Tab>
         <Tab eventKey="deleteUsers" title="מחק משתמשים">
           <DeleteUsers />
+        </Tab>
+        <Tab eventKey="report" title="דווח">
+          <Report/>
+        </Tab>
+        <Tab eventKey="deteleUpload" title="מחק פריטים">
+          <DeleteUpload/>
         </Tab>
       </Tabs>
     </div>

@@ -77,10 +77,20 @@ function Register() {
             </label>
           </div>
           <div className='col-sm-6'>
-            <label>
-              מספר טלפון:
-              <input type='text' className='form-control' value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
-            </label>
+          <label>
+            מספר טלפון:
+            <input 
+              type='text' 
+              className='form-control' 
+              value={phoneNumber} 
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= 10 && /^[0-9]*$/.test(value)) {
+                  setPhoneNumber(value);
+                }
+              }} 
+            />
+          </label>
           </div>
         </div>
         <div className='row'>
