@@ -176,3 +176,21 @@ body{
   display: flex;
   justify-content: center;
 }
+
+.report-item {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.report-item:hover {
+  transform: scale(1.02);
+}
+
+.report-item p {
+  margin: 0;
+}
+
+.report-item strong {
+  color: #007bff;
+}
