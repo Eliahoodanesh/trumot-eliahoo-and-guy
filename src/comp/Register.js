@@ -46,7 +46,7 @@ function Register() {
   };
 
   return (
-    <div className='Enter-form-register content-container'>
+    <div className='Enter-form-register login-container'>
       <h1>הרשמה</h1>
       <br />
       <div className='container'>
