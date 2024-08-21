@@ -13,6 +13,7 @@ import Query from './comp/Query';
 import Footer from './comp/Footer';
 import Error from './comp/Error';
 import Managers from './comp/Managers';
+import PersonalArea from './comp/PersonalArea';
 
 function App() {
   const location = useLocation();
@@ -37,6 +38,7 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Managers" element={<Managers />} />
+          <Route path="/PersonalArea" element={<PersonalArea/>}/>
           <Route path="/*" element={<Error />} />
         </Routes>
       </div>
