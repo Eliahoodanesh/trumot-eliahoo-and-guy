@@ -4,7 +4,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { firestore, imageDb } from '../config/Firebase';
 import { v4 as uuidv4 } from 'uuid';
 import { collection, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
-import { useCollection } from 'react-firebase-hooks/firestore';
+import { getAuth } from 'firebase/auth';
 
 export default function Upload() {
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -18,6 +18,8 @@ export default function Upload() {
   const [donorName, setDonorName] = useState('');
   const [donorPhoneNumber, setDonorPhoneNumber] = useState('');
   const [donorEmail, setDonorEmail] = useState('');
+
+  const auth = getAuth(); // Initialize Firebase Auth
 
   const apiUrl =
     'https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=1272';
@@ -59,6 +61,12 @@ export default function Upload() {
 
   const handleUpload = async () => {
     try {
+      const user = auth.currentUser; // Get the current authenticated user
+      if (!user) {
+        alert('You need to be logged in to upload items.');
+        return;
+      }
+
       const batch = writeBatch(firestore);
       const uploadedUrls = [];
 
@@ -79,6 +87,7 @@ export default function Upload() {
       const phoneStatus = phoneApproved ? 'Your phone number' : 'מספר לא לפרסום';
 
       const itemData = {
+        userId: user.uid, // Store the user's UID
         itemName: itemName,
         itemDescription: itemDescription,
         city: selectedCity,
