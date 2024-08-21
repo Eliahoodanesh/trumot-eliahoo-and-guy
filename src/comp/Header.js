@@ -45,7 +45,7 @@ export default function Header({ onLogout }) {
   };
 
   return (
-    <div className='container'>
+    <div>
       <header className='custom-header d-flex flex-wrap align-items-center justify-content-between'>
         <div className="d-flex flex-wrap align-items-center">
           <img src={photo_trumot} alt='logo' className='App-img'></img>

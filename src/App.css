@@ -1,71 +1,128 @@
+/* General Styles */
 .App {
-  background-color: #9acbff; /* צבע תכלת */
-  margin: 0; /* מסיר גבולות של הדף */
-  padding: 0; /* מסיר ריווח בסיסי */
-  font-family: Arial, sans-serif; /* סוג גופן כללי */
- 
+  background-color: #9acbff; /* Light blue background */
+  margin: 0; 
+  padding: 0; 
+  font-family: Arial, sans-serif;
 }
 
-.App-img {
-  width: 75px;
-  height: 75px;
-}
-
+/* Header Styles */
 .App-header {
-  background-color: #cfe2f3; /* צבע תכלת רך יותר */
+  background-color: #cfe2f3; /* Softer light blue */
 }
-.Enter-form {
-  background-color: #f8f9fa; /* רקע אפור בהיר */
-  border-radius: 20px; /* פינות מעוגלות */
+
+/* Form Container Styles */
+.Enter-form,
+.Enter-form-register {
+  background-color: #f8f9fa; /* Light gray background */
+  border-radius: 20px; 
   display: flex;
-  flex-direction: column; /* תצוגה של האלמנטים בציר האנכי */
+  flex-direction: column; 
   justify-content: center;
   align-items: center;
-  padding: 40px; /* מרווח בפנים לפריטים */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* הצללה קלה */
-  width: 300px; /* רוחב קבוע */
-  margin: auto; /* מרכוז אופקית ואנכית */
+  padding: 40px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  margin: auto;
 }
 
-.Enter-form h1 {
-  margin-bottom: 20px; /* מרווח מתחת לכותרת */
-  color: #007bff; /* צבע כחול */
-  text-align: center;
-}
-
-.Enter-form button {
-  background-color: #007bff; /* צבע כחול */
-  color: white; /* צבע רקע למלל */
-  border: none; /* ללא מסגרת */
-  border-radius: 5px; /* פינות מעוגלות */
-  padding: 10px 20px; /* מרווח פנים */
-  margin: 10px 0; /* מרווח מעל ומתחת לכפתור */
-  cursor: pointer; /* סמן עכבר מראה כיד במעבר */
-  transition: background-color 0.3s ease; /* אנימציה עבור שינוי צבע בעכבר */
-}
-
-.Enter-form button:hover {
-  background-color: #0056b3; /* צבע כחול כהה במעבר עכבר */
+/* Form Specific Styles */
+.Enter-form {
+  width: 300px; /* Fixed width */
 }
 
 .Enter-form-register {
-  background-color: #f8f9fa; /* רקע אפור בהיר */
-  border-radius: 20px; /* פינות מעוגלות */
-  display: flex;
-  flex-direction: column; /* תצוגה של האלמנטים בציר האנכי */
-  justify-content: center;
-  align-items: center;
-  padding: 40px; /* מרווח בפנים לפריטים */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* הצללה קלה */
-  width: 450px; /* רוחב קבוע */
-  margin: auto; /* מרכוז אופקית ואנכית */
+  width: 450px; /* Wider fixed width */
 }
 
-.custom-header{
-  background-color: silver;
+.Enter-form h1 {
+  margin-bottom: 20px; 
+  color: #007bff; /* Blue color for headings */
+  text-align: center;
 }
 
-.custom-link{
+/* Button Styles */
+.Enter-form button {
+  background-color: #007bff; 
+  color: white;
+  border: none; 
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.Enter-form button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slight scaling effect */
+}
+
+/* Header Link Styles */
+/* App.css */
+
+/* HEADER STYLES */
+.custom-header {
+  background-color: #58a9ff; /* Deep blue background */
+  color: white; /* White text for contrast */
+  padding: 10px 20px; /* Padding around the header */
+  border-radius: 10px; /* Rounded corners for a modern look */
+}
+
+.custom-header img {
+  width: 60px; /* Adjust the size of the logo */
+  height: 60px;
+  margin-right: 15px; /* Spacing between logo and links */
+}
+
+.custom-header .custom-link {
+  color: rgb(0, 0, 0); /* White links */
+  font-weight: 500; /* Medium font weight for emphasis */
+  text-decoration: none;
+  margin: 0 10px; /* Space between links */
+  transition: color 0.3s ease-in-out; /* Smooth transition on hover */
+}
+
+.custom-header .custom-link:hover {
+  color: #ffdd00; /* Gold color on hover for visual feedback */
+}
+
+.custom-header .username {
+  margin-right: 20px; /* Space between username and logout button */
+  font-weight: bold;
+}
+
+.custom-header button {
+  background-color: #ff4c4c; /* Red button for logout */
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.custom-header button:hover {
+  background-color: #cc3a3a; /* Darker red on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .custom-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .custom-header .custom-link {
+    margin: 5px 0; /* Stack links with spacing in mobile view */
+  }
+
+  .custom-header button {
+    margin-top: 10px; /* Space above logout button in mobile view */
+  }
+}
+
+
+.custom-link {
   color: black;
   text-decoration: none;
 }
@@ -75,11 +132,18 @@
   text-decoration: underline;
 }
 
-.img-about{
+/* Image Styles */
+.App-img {
+  width: 75px;
+  height: 75px;
+}
+
+.img-about {
   height: 125px;
   width: 125px;
 }
-/* Upload.css */
+
+/* Upload Section Styles */
 .upload-container {
   background-color: #f2f2f2;
   padding: 20px;
@@ -94,6 +158,7 @@
   color: #fff;
   border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .custom-file-upload:hover {
@@ -105,23 +170,24 @@
   margin-top: 10px;
 }
 
-.container-container1{
+/* Container Styles */
+.container-container1 {
   padding-left: 75px;
   padding-right: 75px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto;
 }
 
-.container-container1 img{
+.container-container1 img {
   width: auto;
   max-height: 300px;
 }
 
-.container-container1 .col-md{
+.container-container1 .col-md {
   display: flex;
   align-items: center;
 }
 
+/* Full Height Layout */
 html, body {
   height: 100%;
   margin: 0;
@@ -140,51 +206,56 @@ html, body {
   flex: 1;
 }
 
+/* Footer Styles */
 .footer {
-  background-color: #333;
+  background-color: #db6930;
   color: white;
   text-align: center;
   padding: 10px;
   margin-top: auto;
 }
 
-
-body{
-  background-color:#c5e2ff6e;
+/* Background Color */
+body {
+  background-color: #c5e2ff6e;
 }
 
+/* Item Display Styles */
 .item {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
+/* Carousel Styles */
 .carousel img {
   max-height: 200px;
   object-fit: contain;
 }
 
+/* Card Styles */
 .card {
   border-radius: 10px;
   overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
 }
 
-.content-container {
-  margin-top: 20px; /* Adjust the value as needed */
+.card:hover {
+  transform: scale(1.02); /* Slight scaling effect on hover */
 }
 
-.center-button {
-  display: flex;
-  justify-content: center;
-}
-
+/* Report Item Styles */
 .report-item {
   background-color: #f8f9fa;
   border-radius: 8px;
   transition: transform 0.2s ease-in-out;
+  padding: 10px;
+  margin-bottom: 15px;
 }
 
 .report-item:hover {
-  transform: scale(1.02);
+  transform: scale(1.02); /* Slight scaling effect on hover */
 }
 
 .report-item p {
@@ -192,5 +263,108 @@ body{
 }
 
 .report-item strong {
-  color: #007bff;
+  color: #007bff; /* Blue color for emphasis */
+}
+
+/* Content Container Styles */
+/* SHARED STYLES FOR FORMS */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa; /* Light grey background */
+  border-radius: 15px; /* Rounded corners */
+  padding: 30px; /* Padding around the content */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  max-width: 600px; /* Limit the form width */
+  margin: 50px auto; /* Center the form on the page */
+  text-align: center; /* Center the text inside the form */
+}
+
+.login-container h1 {
+  font-size: 2rem; /* Increase the font size of the header */
+  color: #343a40; /* Dark grey color for the text */
+  margin-bottom: 20px; /* Space between the header and the content */
+}
+
+.login-container img {
+  width: 150px; /* Adjust the size of the logo */
+  height: auto;
+  margin-bottom: 30px; /* Space between the image and the buttons */
+}
+
+.login-container .btn {
+  width: 100%; /* Full-width buttons */
+  padding: 10px; /* Increase padding for a larger button */
+  margin: 10px 0; /* Space between the buttons */
+  font-size: 1.1rem; /* Slightly larger font size */
+  background-color: #007bff; /* Bootstrap primary color */
+  border-radius: 5px; /* Rounded button corners */
+  transition: background-color 0.3s ease-in-out; /* Smooth transition on hover */
+}
+
+.login-container .btn:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* STYLES FOR FORM INPUT FIELDS */
+.form-control {
+  margin: 10px 0; /* Space between the input fields */
+  padding: 10px; /* Padding inside the input fields */
+  border-radius: 5px; /* Rounded corners for input fields */
+  border: 1px solid #ced4da; /* Light grey border */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow for input fields */
+}
+
+/* STYLES FOR REGISTER FORM */
+.Enter-form-register .row {
+  margin-bottom: 15px; /* Space between rows */
+}
+
+.Enter-form-register label {
+  font-size: 1rem; /* Adjust label font size */
+  color: #495057; /* Dark grey for labels */
+}
+
+/* BACK BUTTON IN LOGIN PAGE */
+.login-container button {
+  padding: 10px 20px; /* Padding for buttons */
+  background-color: #0088ff; /* Bootstrap secondary color */
+  color: white; /* White text */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  margin-top: 20px; /* Space above the button */
+  transition: background-color 0.3s ease-in-out; /* Smooth transition on hover */
+}
+
+.login-container button:hover {
+  background-color: #00477e; /* Darker shade on hover */
+}
+
+/* RESPONSIVE STYLES */
+@media (max-width: 576px) {
+  .login-container {
+    padding: 20px; /* Reduce padding on smaller screens */
+    margin: 30px auto; /* Reduce margin for smaller screens */
+  }
+
+  .login-container h1 {
+    font-size: 1.5rem; /* Reduce the font size of the header */
+  }
+
+  .login-container img {
+    width: 120px; /* Reduce the size of the logo on smaller screens */
+  }
+
+  .login-container .btn {
+    font-size: 1rem; /* Adjust button font size for smaller screens */
+  }
+}
+
+
+/* Center Button Styles */
+.center-button {
+  display: flex;
+  justify-content: center;
 }

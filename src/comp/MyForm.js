@@ -5,7 +5,7 @@ import photo_trumot from '../img/photo_trumot.jpg';
 
 function MyForm() {
   return (
-    <div className='Enter-form content-container'>
+    <div className='Enter-form login-container'>
       <h1>ברוכים הבאים!</h1>
       <img src={photo_trumot} alt='logo' className='App-img' />
       <Link to="/Login">
