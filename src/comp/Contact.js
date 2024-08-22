@@ -1,38 +1,40 @@
 import React, { useEffect, useState } from 'react';
+import { collection, getDocs } from "firebase/firestore";
+import { firestore } from '../config/Firebase';
 
-export default function Contact() {
-  const [contact1, setContact1] = useState({ name: '', phone: '', email: '' });
-  const [contact2, setContact2] = useState({ name: '', phone: '', email: '' });
+const Contact = () => {
+  const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
-    // Load the contact details from localStorage or backend
-    const storedContact1 = JSON.parse(localStorage.getItem('contact1')) || { name: 'אליהו דאנש', phone: '052-5721369', email: 'danesheliahoo@gmail.com' };
-    const storedContact2 = JSON.parse(localStorage.getItem('contact2')) || { name: 'גיא ברכה', phone: '052-5914445', email: 'guy.bracha@gmail.com' };
-    setContact1(storedContact1);
-    setContact2(storedContact2);
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(firestore, "contacts"));
+      const contactsData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setContacts(contactsData);
+    };
+
+    fetchData();
   }, []);
 
   return (
-    <div className="container">
-      <h1 className="mt-5">צור קשר</h1>
-      <div className="row mt-4">
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <h3>{contact1.name} - {contact1.phone}</h3>
-              <h3>{contact1.email}</h3>
-            </div>
+    <div className='container'>
+      <h2>צור קשר</h2>
+      {contacts.length > 0 ? (
+        contacts.map(contact => (
+          <div key={contact.id}>
+            <p>שם: {contact.name}</p>
+            <p>אימייל: {contact.email}</p>
+            <p>טלפון: {contact.phone}</p>
+            <hr />
           </div>
-        </div>
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <h3>{contact2.name} - {contact2.phone}</h3>
-              <h3>{contact2.email}</h3>
-            </div>
-          </div>
-        </div>
-      </div>
+        ))
+      ) : (
+        <p>טוען נתונים...</p>
+      )}
     </div>
   );
-}
+};
+
+export default Contact;

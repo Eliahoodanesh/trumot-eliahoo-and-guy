@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from 'react';
+import { firestore } from '../config/Firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export default function ContactEditor() {
   const [contact1, setContact1] = useState({ name: '', phone: '', email: '' });
   const [contact2, setContact2] = useState({ name: '', phone: '', email: '' });
 
   useEffect(() => {
-    // Load the contact details from localStorage or backend
-    const storedContact1 = JSON.parse(localStorage.getItem('contact1')) || { name: 'אליהו דאנש', phone: '052-5721369', email: 'danesheliahoo@gmail.com' };
-    const storedContact2 = JSON.parse(localStorage.getItem('contact2')) || { name: 'גיא ברכה', phone: '052-5914445', email: 'guy.bracha@gmail.com' };
-    setContact1(storedContact1);
-    setContact2(storedContact2);
+    async function fetchContacts() {
+      const contact1Ref = doc(firestore, 'contacts', 'hceD7mx4vyCg2vn1iCSf');
+      const contact2Ref = doc(firestore, 'contacts', 'J1TrM6CfE7s8T74jmpQm');
+      const contact1Doc = await getDoc(contact1Ref);
+      const contact2Doc = await getDoc(contact2Ref);
+
+      if (contact1Doc.exists()) setContact1(contact1Doc.data());
+      if (contact2Doc.exists()) setContact2(contact2Doc.data());
+    }
+
+    fetchContacts();
   }, []);
 
-  const handleSave = () => {
-    // Save the contact details to localStorage or backend
-    localStorage.setItem('contact1', JSON.stringify(contact1));
-    localStorage.setItem('contact2', JSON.stringify(contact2));
+  const handleSave = async () => {
+    const contact1Ref = doc(firestore, 'contacts', 'hceD7mx4vyCg2vn1iCSf');
+    const contact2Ref = doc(firestore, 'contacts', 'J1TrM6CfE7s8T74jmpQm');
+
+    await setDoc(contact1Ref, contact1);
+    await setDoc(contact2Ref, contact2);
+
     console.log('Saving contact details:', contact1, contact2);
   };
 
