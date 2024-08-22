@@ -5,26 +5,45 @@ import photo_trumot from '../img/photo_trumot.jpg';
 
 export default function About() {
   const [aboutContent, setAboutContent] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchAboutContent() {
-      const aboutRef = doc(firestore, 'content', 'hUv0Qdo9FQQom5TcoUMa');
-      const aboutDoc = await getDoc(aboutRef);
+      try {
+        const aboutRef = doc(firestore, 'content', 'hUv0Qdo9FQQom5TcoUMa');
+        const aboutDoc = await getDoc(aboutRef);
 
-      if (aboutDoc.exists()) {
-        setAboutContent(aboutDoc.data().content);
+        if (aboutDoc.exists()) {
+          setAboutContent(aboutDoc.data().about || 'No content available.');
+        } else {
+          setAboutContent('No content available.');
+        }
+      } catch (err) {
+        setError('Failed to fetch content.');
+        console.error('Error fetching about content:', err);
+      } finally {
+        setLoading(false);
       }
     }
 
     fetchAboutContent();
   }, []);
 
+  if (loading) {
+    return <div className='container'><p>Loading...</p></div>;
+  }
+
+  if (error) {
+    return <div className='container'><p>{error}</p></div>;
+  }
+
   return (
     <div className='container'>
       <h2>אודות האתר</h2>
       <p>{aboutContent}</p>
       <div className='container text-center'>
-        <img src={photo_trumot} alt='logo' className='img-about'></img>
+        <img src={photo_trumot} alt='logo' className='img-about' />
       </div>
     </div>
   );
