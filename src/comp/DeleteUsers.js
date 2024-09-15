@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-import { firestore } from '../config/Firebase'; // תיקון הייבוא של firestore
+import { deleteUser } from 'firebase/auth';
+import { firestore, auth } from '../config/Firebase'; // תיקון הייבוא של firestore
 
 export default function DeleteUsers() {
   const [users, setUsers] = useState([]);
@@ -18,9 +19,23 @@ export default function DeleteUsers() {
     fetchUsers();
   }, []);
 
-  const handleDelete = async (id) => {
-    await deleteDoc(doc(firestore, "users", id));
-    setUsers(users.filter(user => user.id !== id));
+  const handleDelete = async (id, uid) => {
+    try {
+      // מחיקת המסמך מה-Firestore
+      await deleteDoc(doc(firestore, "users", id));
+  
+      // מציאת המשתמש ב-Authentication ומחיקתו
+      const userAuth = auth.currentUser;
+      if (userAuth) {
+        await deleteUser(userAuth);
+      }
+  
+      // עדכון ה-state לאחר מחיקה
+      setUsers(users.filter(user => user.id !== id));
+      console.log("המשתמש נמחק לחלוטין");
+    } catch (error) {
+      console.error("שגיאה במחיקת המשתמש:", error);
+    }
   };
 
   return (
