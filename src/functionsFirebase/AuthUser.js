@@ -50,7 +50,7 @@ export const Auth = () => {
 
     useEffect(() => {
         if (currentUser) {
-            navigate("/");
+            navigate("/MyForm");
         }
     }, [currentUser, navigate]);
 
@@ -71,11 +71,11 @@ export const Auth = () => {
             if (!userExists) {
                 await auth.signOut();
                 alert("משתמש זה נמחק מהמערכת.");
+                navigate("/MyForm");  // הפניה לעמוד MyForm
                 return;
             }
 
             console.log("Signed in successfully");
-            navigate("/");
         } catch (err) {
             console.error("Error signing in:", err.message);
             alert(err.message);
