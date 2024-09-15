@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../config/Firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
-import { setDoc, doc, getDoc } from "firebase/firestore"; // הוספת getDoc לבדיקה אם המשתמש קיים
+import { setDoc, doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./UseAuth";
 
@@ -47,10 +47,11 @@ export const Auth = () => {
     const currentUser = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false); // סטטוס טעינה כדי למנוע גישה לתוכן לפני אימות
 
     useEffect(() => {
         if (currentUser) {
-            navigate("/MyForm");
+            navigate("/"); // הפניה לדף הבית
         }
     }, [currentUser, navigate]);
 
@@ -62,6 +63,7 @@ export const Auth = () => {
 
     // פונקציית התחברות
     const signIn = async (email, password) => {
+        setLoading(true); // מתחילים את הטעינה
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
@@ -71,14 +73,17 @@ export const Auth = () => {
             if (!userExists) {
                 await auth.signOut();
                 alert("משתמש זה נמחק מהמערכת.");
-                navigate("/MyForm");  // הפניה לעמוד MyForm
+                setLoading(false); // סיום הטעינה במקרה של שגיאה
+                navigate("/MyForm");
                 return;
             }
 
             console.log("Signed in successfully");
+            setLoading(false); // סיום הטעינה לאחר הצלחה
         } catch (err) {
             console.error("Error signing in:", err.message);
             alert(err.message);
+            setLoading(false); // סיום הטעינה במקרה של שגיאה
         }
     };
 
@@ -92,6 +97,10 @@ export const Auth = () => {
             alert(error.message);
         }
     };
+
+    if (loading) {
+        return <div>טוען...</div>; // הצגת הודעת טעינה בזמן הבדיקה
+    }
 
     return (
         <div>
