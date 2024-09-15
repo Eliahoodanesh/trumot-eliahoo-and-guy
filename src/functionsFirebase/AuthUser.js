@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../config/Firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth"; // הוספת sendPasswordResetEmail
-import { setDoc, doc } from "firebase/firestore";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { setDoc, doc, getDoc } from "firebase/firestore"; // הוספת getDoc לבדיקה אם המשתמש קיים
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./UseAuth";
 
+// פונקציית הרשמה
 export const signUp = async (firstName, lastName, location, phoneNumber, email, username, password) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -27,6 +28,7 @@ export const signUp = async (firstName, lastName, location, phoneNumber, email, 
     }
 };
 
+// פונקציה ליציאה מהחשבון
 export const useLogout = () => {
     const logout = async () => {
         try {
@@ -37,13 +39,14 @@ export const useLogout = () => {
         }
     };
     return { logout };
-}
+};
 
+// פונקציית אימות
 export const Auth = () => {
     const navigate = useNavigate();
     const currentUser = useAuth();
-    const [email, setEmail] = useState(""); // Define state for email
-    const [password, setPassword] = useState(""); // Define state for password
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     useEffect(() => {
         if (currentUser) {
@@ -51,9 +54,26 @@ export const Auth = () => {
         }
     }, [currentUser, navigate]);
 
+    // פונקציה לבדוק אם המשתמש קיים ב-Firestore לפני התחברות
+    const checkIfUserExists = async (uid) => {
+        const userDoc = await getDoc(doc(db, "users", uid));
+        return userDoc.exists();
+    };
+
+    // פונקציית התחברות
     const signIn = async (email, password) => {
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // בדיקה אם המשתמש קיים ב-Firestore
+            const userExists = await checkIfUserExists(user.uid);
+            if (!userExists) {
+                await auth.signOut();
+                alert("משתמש זה נמחק מהמערכת.");
+                return;
+            }
+
             console.log("Signed in successfully");
             navigate("/");
         } catch (err) {
@@ -62,6 +82,7 @@ export const Auth = () => {
         }
     };
 
+    // פונקציה לשליחת הודעת איפוס סיסמא
     const forgotPassword = async (email) => {
         try {
             await sendPasswordResetEmail(auth, email);

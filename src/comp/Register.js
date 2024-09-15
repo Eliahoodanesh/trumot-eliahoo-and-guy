@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { signUp } from '../functionsFirebase/AuthUser'; // ודא שהייבוא נכון
+import { signUp } from '../functionsFirebase/AuthUser'; // ייבוא נכון של פונקציית signUp
 import { useNavigate } from 'react-router-dom';
 
 function Register() {
@@ -16,6 +16,8 @@ function Register() {
   const apiUrl = "https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=1272";
 
   const navigate = useNavigate();
+  
+  // Fetching cities from API
   useEffect(() => {
     async function fetchCities() {
       try {
@@ -27,19 +29,26 @@ function Register() {
         console.error('Error fetching cities:', error);
       }
     }
-
     fetchCities();
   }, []);
 
+  // Function for signing up the user
   const handleSignUp = async () => {
     if (password !== confirmPassword) {
       alert("הסיסמאות אינן תואמות!");
       return;
     }
+
+    // Checking if all fields are filled
+    if (!firstName || !lastName || !location || !phoneNumber || !email || !username || !password) {
+      alert("נא למלא את כל השדות");
+      return;
+    }
+
     try {
       await signUp(firstName, lastName, location, phoneNumber, email, username, password); 
       alert("משתמש נרשם בהצלחה");
-      navigate("/");
+      navigate("/"); // Redirecting to homepage after successful registration
     } catch (error) {
       console.error("שגיאה בהרשמה:", error);
     }
@@ -50,6 +59,7 @@ function Register() {
       <h1>הרשמה</h1>
       <br />
       <div className='container'>
+        {/* Personal Details */}
         <div className='row'>
           <div className='col-sm-6'>
             <label>
@@ -64,6 +74,8 @@ function Register() {
             </label>
           </div>
         </div>
+
+        {/* Location and Phone */}
         <div className='row'>
           <div className='col-sm-6'>
             <label>
@@ -71,28 +83,30 @@ function Register() {
               <select className='form-control' value={location} onChange={(e) => setLocation(e.target.value)}>
                 <option value='' disabled>בחר אזור בארץ</option>
                 {cities.map(city => (
-                  <option key={city.id} value={city.name}>{city.name}</option> 
+                  <option key={city.id} value={city.name}>{city.name}</option>
                 ))}
               </select>
             </label>
           </div>
           <div className='col-sm-6'>
-          <label>
-            מספר טלפון:
-            <input 
-              type='text' 
-              className='form-control' 
-              value={phoneNumber} 
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value.length <= 10 && /^[0-9]*$/.test(value)) {
-                  setPhoneNumber(value);
-                }
-              }} 
-            />
-          </label>
+            <label>
+              מספר טלפון:
+              <input 
+                type='text' 
+                className='form-control' 
+                value={phoneNumber} 
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value.length <= 10 && /^[0-9]*$/.test(value)) {
+                    setPhoneNumber(value);
+                  }
+                }} 
+              />
+            </label>
           </div>
         </div>
+
+        {/* Email and Username */}
         <div className='row'>
           <div className='col-sm-6'>
             <label>
@@ -107,6 +121,8 @@ function Register() {
             </label>
           </div>
         </div>
+
+        {/* Password and Confirm Password */}
         <div className='row'>
           <div className='col-sm-6'>
             <label>
@@ -123,6 +139,7 @@ function Register() {
         </div>
       </div>
       <br />
+      {/* Sign Up Button */}
       <button className='btn btn-primary' onClick={handleSignUp}>הרשמה</button>
     </div>
   );
