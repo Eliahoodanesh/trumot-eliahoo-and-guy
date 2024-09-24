@@ -39,7 +39,7 @@ export default function About() {
   }
 
   return (
-    <div className='container'>
+    <div className='container-fluid'>
       <h2>אודות האתר</h2>
       <p>{aboutContent}</p>
       <div className='container text-center'>

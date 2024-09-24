@@ -4,7 +4,7 @@ import {Auth} from "../functionsFirebase/AuthUser";
 
 function Login() {
   return (
-    <div className='Enter-form login-container'>
+    <div className='Enter-form login-container container-fluid'>
       <h1>התחברות</h1>
       <br />
       <Auth/>

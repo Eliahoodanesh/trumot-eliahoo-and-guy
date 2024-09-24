@@ -20,7 +20,7 @@ const Contact = () => {
   }, []);
 
   return (
-    <div className='container'>
+    <div className='container-fluid'>
       <h2 className='my-4 text-center'>צור קשר</h2>
       {contacts.length > 0 ? (
         contacts.map(contact => (
@@ -28,6 +28,11 @@ const Contact = () => {
             <h5 className='text-primary'>{contact.name}</h5>
             <p><strong>אימייל:</strong> {contact.email}</p>
             <p><strong>טלפון:</strong> {contact.phone}</p>
+            <a href={`https://wa.me/${contact.phone}`} target="_blank" rel="noopener noreferrer">
+              <button className='btn btn-success'>
+                צ'אט בוואטסאפ
+              </button>
+            </a>
           </div>
         ))
       ) : (

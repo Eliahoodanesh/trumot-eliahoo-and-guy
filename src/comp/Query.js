@@ -63,7 +63,8 @@ export default function Query() {
   };
 
   return (
-    <Container className='mt-5'>
+    <div className='container-fluid'>
+      <Container className='mt-5'>
       <Row className='justify-content-center'>
         <Col xs={12} md={8} lg={6}>
           <Card className='p-4 shadow'>
@@ -116,6 +117,7 @@ export default function Query() {
                               city={result.city}
                               phoneNum={result.phoneStatus === 'Your phone number' ? result.donorPhoneNumber : 'מספר לא לפרסום'}
                               itemDesc={result.itemDescription}
+                              itemNote={result.itemNote}
                               itemName={result.itemName}
                               onEmailUser={() => handleEmailUser(result.donorEmail)}
                             />
@@ -148,5 +150,6 @@ export default function Query() {
         </Col>
       </Row>
     </Container>
+    </div>
   );
 }

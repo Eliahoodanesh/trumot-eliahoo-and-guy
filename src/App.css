@@ -14,7 +14,7 @@
 /* Form Container Styles */
 .Enter-form,
 .Enter-form-register {
-  background-color: #f8f9fa; /* Light gray background */
+  background-color: #fffaf0; /* צבע קרם */
   border-radius: 20px; 
   display: flex;
   flex-direction: column; 
@@ -367,4 +367,9 @@ body {
 .center-button {
   display: flex;
   justify-content: center;
+}
+.container-fluid {
+  background-color: #fffaf0; /* צבע קרם */
+  padding: 20px;
+  min-height: 100vh;
 }
