@@ -53,6 +53,7 @@ export default function ItemList() {
                 city={item.city}
                 phoneNum={item.donorPhoneNumber}
                 itemDesc={item.itemDescription}
+                itemNote={item.itemNote}
                 itemName={item.itemName}
                 onEmailUser={handleEmailUser}
                 donorEmail={item.donorEmail}

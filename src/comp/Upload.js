@@ -12,6 +12,7 @@ export default function Upload() {
   const [cities, setCities] = useState([]);
   const [itemName, setItemName] = useState('');
   const [itemDescription, setItemDescription] = useState('');
+  const [itemNote, setItemNote] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [uploadedUrls, setUploadedUrls] = useState([]);
   const [phoneApproved, setPhoneApproved] = useState(false);
@@ -61,15 +62,21 @@ export default function Upload() {
 
   const handleUpload = async () => {
     try {
+      // Validate required fields
+      if (!itemName || !itemDescription || !donorName || (!donorPhoneNumber && !donorEmail)) {
+        alert('Please fill in all required fields: Item Name, Description, Donor Name, and either Phone or Email.');
+        return;
+      }
+  
       const user = auth.currentUser; // Get the current authenticated user
       if (!user) {
         alert('You need to be logged in to upload items.');
         return;
       }
-
+  
       const batch = writeBatch(firestore);
       const uploadedUrls = [];
-
+  
       for (const file of selectedFiles) {
         try {
           console.log('Uploading file:', file.name);
@@ -83,13 +90,14 @@ export default function Upload() {
           throw new Error('File upload failed');
         }
       }
-
+  
       const phoneStatus = phoneApproved ? 'Your phone number' : 'מספר לא לפרסום';
-
+  
       const itemData = {
         userId: user.uid, // Store the user's UID
         itemName: itemName,
         itemDescription: itemDescription,
+        itemNote: itemNote,
         city: selectedCity,
         imageUrls: uploadedUrls,
         phoneStatus: phoneStatus,
@@ -98,11 +106,11 @@ export default function Upload() {
         donorEmail: donorEmail,
         createdAt: serverTimestamp(),
       };
-
+  
       const itemsCollection = collection(firestore, 'items');
       const newItemRef = doc(itemsCollection);
       batch.set(newItemRef, itemData);
-
+  
       await batch.commit();
       setUploadedUrls(uploadedUrls);
       alert('All files uploaded successfully!');
@@ -111,6 +119,7 @@ export default function Upload() {
       alert('Failed to write item data. Please try again.');
     }
   };
+  
 
   const handleCityChange = event => {
     setSelectedCity(event.target.value);
@@ -121,7 +130,7 @@ export default function Upload() {
   };
 
   return (
-    <div className='container'>
+    <div className='container-fluid'>
       <div className='text-center'>
         <h1>העלה פריט</h1>
       </div>
@@ -169,6 +178,15 @@ export default function Upload() {
                   placeholder='תיאור'
                   value={itemDescription}
                   onChange={e => setItemDescription(e.target.value)}
+                />
+              </div>
+              <div className='col-md-4'>
+                <input
+                  type='text'
+                  className='form-control'
+                  placeholder='הערות'
+                  value={itemNote}
+                  onChange={e => setItemNote(e.target.value)}
                 />
               </div>
               <div className='col-md-4'>

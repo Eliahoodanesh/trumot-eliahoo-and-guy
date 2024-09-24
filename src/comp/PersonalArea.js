@@ -49,7 +49,7 @@ export default function PersonalArea() {
   };
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <h2 className="text-center my-4">האזור האישי שלי</h2>
       {items.length === 0 ? (
         <p className="text-center">לא העלית עדיין פריטים</p>
