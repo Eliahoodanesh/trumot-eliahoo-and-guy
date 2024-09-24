@@ -1,76 +1,76 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../config/Firebase'; // הנחת הקובץ firebaseConfig כולל את ההגדרות של Firebase
-import { Modal, Button } from 'react-bootstrap'; // הוספת הייבוא של Modal ו-Button מ-Bootstrap
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore'; // Import Firestore functions
+import { db } from '../config/Firebase'; // Assuming the Firebase config file contains the settings for Firebase
+import { Modal, Button } from 'react-bootstrap'; // Import Modal and Button from Bootstrap
 
 export default function DeleteUpload() {
-  const [items, setItems] = useState([]);
-  const [showModal, setShowModal] = useState(false); // state לניהול ה-Modal
-  const [selectedItem, setSelectedItem] = useState(null); // שמירת הפריט שנבחר למחיקה
+  const [items, setItems] = useState([]); // State to store items
+  const [showModal, setShowModal] = useState(false); // State to control the modal visibility
+  const [selectedItem, setSelectedItem] = useState(null); // State to store the selected item for deletion
 
   useEffect(() => {
     const fetchItems = async () => {
-      const itemsCollection = collection(db, 'items');
-      const itemSnapshot = await getDocs(itemsCollection);
+      const itemsCollection = collection(db, 'items'); // Reference to the 'items' collection in Firestore
+      const itemSnapshot = await getDocs(itemsCollection); // Fetch documents from the collection
       const itemList = itemSnapshot.docs.map(doc => ({
-        id: doc.id, // לשמירת ה-ID של הפריט כדי שנוכל למחוק אותו
-        ...doc.data()
+        id: doc.id, // Store the document ID for deletion
+        ...doc.data() // Spread the document data into an object
       }));
-      setItems(itemList);
+      setItems(itemList); // Update state with the fetched items
     };
 
-    fetchItems();
+    fetchItems(); // Call the function to fetch items on component mount
   }, []);
 
   const handleDelete = async () => {
-    if (!selectedItem) return;
+    if (!selectedItem) return; // If no item is selected, exit the function
 
-    await deleteDoc(doc(db, 'items', selectedItem.id)); // מחיקת הפריט מ-Firebase
-    setItems(items.filter(item => item.id !== selectedItem.id)); // עדכון הרשימה
-    setShowModal(false); // סגירת ה-Modal לאחר המחיקה
+    await deleteDoc(doc(db, 'items', selectedItem.id)); // Delete the selected item from Firebase
+    setItems(items.filter(item => item.id !== selectedItem.id)); // Update the list to remove the deleted item
+    setShowModal(false); // Close the modal after deletion
   };
 
   const confirmDelete = (item) => {
-    setSelectedItem(item); // שמירת הפריט שנבחר למחיקה
-    setShowModal(true); // הצגת ה-Modal
+    setSelectedItem(item); // Store the selected item for deletion
+    setShowModal(true); // Show the modal for confirmation
   };
 
-  const handleClose = () => setShowModal(false); // סגירת ה-Modal
+  const handleClose = () => setShowModal(false); // Close the modal
 
   return (
     <div className='container'>
       <h1>מחק פריט</h1>
-      {items.length > 0 ? (
+      {items.length > 0 ? ( // Check if there are items to display
         <ul className="list-group">
           {items.map(item => (
             <li key={item.id} className="list-group-item d-flex justify-content-between align-items-center">
               <div>
-                <p><strong>פריט:</strong> {item.itemName}</p>
-                <p><strong>תורם:</strong> {item.donorName}</p>
-                <p><strong>מיקום איסוף:</strong> {item.city}</p>
+                <p><strong>פריט:</strong> {item.itemName}</p> {/* Display the item name */}
+                <p><strong>תורם:</strong> {item.donorName}</p> {/* Display the donor's name */}
+                <p><strong>מיקום איסוף:</strong> {item.city}</p> {/* Display the pickup location */}
               </div>
-              <button className="btn btn-danger" onClick={() => confirmDelete(item)}>מחק</button>
+              <button className="btn btn-danger" onClick={() => confirmDelete(item)}>מחק</button> {/* Delete button */}
             </li>
           ))}
         </ul>
       ) : (
-        <p>אין פריטים זמינים למחיקה.</p>
+        <p>אין פריטים זמינים למחיקה.</p> // Message when there are no items available for deletion
       )}
 
-      {/* Modal לאישור מחיקה */}
+      {/* Modal for deletion confirmation */}
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>אישור מחיקת פריט</Modal.Title>
+          <Modal.Title>אישור מחיקת פריט</Modal.Title> {/* Modal title for deletion confirmation */}
         </Modal.Header>
         <Modal.Body>
-          האם אתה בטוח שאתה רוצה למחוק את הפריט הזה?
+          האם אתה בטוח שאתה רוצה למחוק את הפריט הזה? {/* Confirmation message */}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            לא
+            לא {/* Button to cancel deletion */}
           </Button>
           <Button variant="danger" onClick={handleDelete}>
-            כן, מחק פריט
+            כן, מחק פריט {/* Button to confirm deletion */}
           </Button>
         </Modal.Footer>
       </Modal>
