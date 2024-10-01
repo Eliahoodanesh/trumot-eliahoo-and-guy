@@ -57,24 +57,24 @@ export default function DeleteUsers() {
       <ul className="list-group">
         {users.map(user => (
           <li key={user.id} className="list-group-item d-flex justify-content-between align-items-center">
-            {user.username || "שם לא זמין"} // Display username or fallback if not available
-            <button className="btn btn-danger" onClick={() => confirmDelete(user)}>X</button> // Delete button for each user
+            {user.username || "שם לא זמין"} 
+            <button className="btn btn-danger" onClick={() => confirmDelete(user)}>X</button> 
           </li>
         ))}
       </ul>
 
-      <Modal show={showModal} onHide={handleClose}> // Modal for delete confirmation
+      <Modal show={showModal} onHide={handleClose}> {/* Modal for delete confirmation */}
         <Modal.Header closeButton>
-          <Modal.Title>אישור מחיקת משתמש</Modal.Title> // Modal title in Hebrew
+          <Modal.Title>אישור מחיקת משתמש</Modal.Title> {/* Modal title in Hebrew */}
         </Modal.Header>
         <Modal.Body>
-          האם אתה בטוח שאתה רוצה למחוק את המשתמש הזה? // Confirmation question in Hebrew
+          האם אתה בטוח שאתה רוצה למחוק את המשתמש הזה? 
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}> // Button to close modal without deleting
+          <Button variant="secondary" onClick={handleClose}> 
             לא
           </Button>
-          <Button variant="danger" onClick={handleDelete}> // Button to confirm and delete the user
+          <Button variant="danger" onClick={handleDelete}> 
             כן, מחק משתמש
           </Button>
         </Modal.Footer>

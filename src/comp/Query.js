@@ -125,7 +125,7 @@ export default function Query() {
                             </Col>
                             <Col sm={6}>
                               {result.imageUrls && result.imageUrls.length > 0 && ( // Check if images exist
-                                <Carousel className="mt-3"> // Carousel for displaying images
+                                <Carousel className="mt-3"> {/* Carousel for displaying images*/}
                                   {result.imageUrls.map((image, idx) => (
                                     <Carousel.Item key={idx}>
                                       <img
