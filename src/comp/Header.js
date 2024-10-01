@@ -80,6 +80,11 @@ export default function Header({ onLogout }) {
           {/* Link to Personal Area */}
           
           <span className="mx-2"> </span>
+
+          <Link to="/Feedback" className='custom-link'>משוב</Link> 
+          {/* Link to Personal Area */}
+          
+          <span className="mx-2"> </span>
           
           <Link to="/Managers" className='custom-link'>כניסה למנהלים</Link> 
           {/* Link to Admin Login page */}
