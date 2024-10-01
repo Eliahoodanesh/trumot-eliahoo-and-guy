@@ -61,6 +61,7 @@ export default function ItemList() {
                 onEmailUser={handleEmailUser} // Function to handle email user action
                 donorEmail={item.donorEmail} // Donor's email address
                 imageUrls={item.imageUrls} // Array of image URLs for the item
+                selectedCategory={item.category} // selected category of the specific item
               />
             </div>
           ))}

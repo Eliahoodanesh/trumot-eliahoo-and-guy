@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card'; // Importing Bootstrap Card component
 import { useNavigate } from 'react-router-dom';
 import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore'; // Import Firestore methods
 
-export default function ItemDisplay({ imageUrls, donatingUser, city, phoneNum, itemDesc, itemNote, itemName, onEmailUser, donorEmail }) {
+export default function ItemDisplay({ imageUrls, donatingUser, city, phoneNum, itemDesc, itemNote, itemName, onEmailUser, donorEmail, selectedCategory }) {
   const navigate = useNavigate();
   const db = getFirestore(); // Get a reference to the Firestore database
 
@@ -27,7 +27,8 @@ export default function ItemDisplay({ imageUrls, donatingUser, city, phoneNum, i
         city, 
         phoneNum, 
         itemDesc,
-        itemNote
+        itemNote,
+        selectedCategory
       });
       console.log("Document written with ID: ", docRef.id);
   
@@ -58,7 +59,8 @@ export default function ItemDisplay({ imageUrls, donatingUser, city, phoneNum, i
           <strong>מיקום איסוף:</strong> {city}<br /> {/* Pickup location */}
           <strong>טלפון:</strong> {phoneNum}<br /> {/* Phone number */}
           <strong>תיאור פריט:</strong> {itemDesc}<br/> {/* Item description */}
-          <strong>הערות:</strong> {itemNote} {/* Item notes */}
+          <strong>הערות: </strong> {itemNote} <br/>{/* Item notes */}
+          <strong>קטגוריה: </strong>{selectedCategory}
         </Card.Text>
         <div className="d-flex justify-content-between">
           {/* Button to contact donor via email */}
