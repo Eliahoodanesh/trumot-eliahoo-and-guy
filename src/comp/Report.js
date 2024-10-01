@@ -2,27 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { getFirestore, collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 
 export default function Report() {
-  const [reports, setReports] = useState([]);
+  const [reports, setReports] = useState([]); // State for storing reports
 
   useEffect(() => {
     const fetchReports = async () => {
-      const db = getFirestore(); // קבלת הפניה למסד הנתונים
-      const reportsCollection = collection(db, 'reports'); // פניה לאוסף 'reports'
-      const reportSnapshot = await getDocs(reportsCollection); // שליפת המסמכים
+      const db = getFirestore(); // Get a reference to the Firestore database
+      const reportsCollection = collection(db, 'reports'); // Reference the 'reports' collection
+      const reportSnapshot = await getDocs(reportsCollection); // Fetch the documents
       const reportList = reportSnapshot.docs.map(doc => ({
-        id: doc.id, // שמירת ה-ID של הדיווח
-        ...doc.data()
+        id: doc.id, // Store the report ID
+        ...doc.data() // Spread the document data
       }));
-      setReports(reportList); // עדכון ה-state
+      setReports(reportList); // Update state with the fetched reports
     };
 
-    fetchReports();
+    fetchReports(); // Call the fetch function
   }, []);
 
   const handleDelete = async (reportId) => {
     const db = getFirestore();
-    await deleteDoc(doc(db, 'reports', reportId)); // מחיקת המסמך מ-Firebase
-    setReports(reports.filter(report => report.id !== reportId)); // עדכון הרשימה
+    await deleteDoc(doc(db, 'reports', reportId)); // Delete the document from Firestore
+    setReports(reports.filter(report => report.id !== reportId)); // Update the report list
   };
 
   return (
@@ -30,8 +30,11 @@ export default function Report() {
       <h1 className="text-center mb-4">דיווחים</h1>
       {reports.length > 0 ? (
         <ul className="list-group">
-          {reports.map((report, index) => (
-            <li key={index} className="list-group-item report-item mb-3 p-4 shadow-sm d-flex justify-content-between align-items-center">
+          {reports.map((report) => (
+            <li 
+              key={report.id} // Use report ID as the key for better uniqueness
+              className="list-group-item report-item mb-3 p-4 shadow-sm d-flex justify-content-between align-items-center"
+            >
               <div>
                 <p><strong>פריט:</strong> {report.itemName}</p>
                 <p><strong>תורם:</strong> {report.donatingUser}</p>
@@ -39,12 +42,14 @@ export default function Report() {
                 <p><strong>טלפון:</strong> {report.phoneNum}</p>
                 <p><strong>תיאור פריט:</strong> {report.itemDesc}</p>
               </div>
-              <button className="btn btn-danger" onClick={() => handleDelete(report.id)}>מחק</button>
+              <button className="btn btn-danger" onClick={() => handleDelete(report.id)}>
+                מחק
+              </button>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-center">אין דיווחים זמינים.</p>
+        <p className="text-center">אין דיווחים זמינים.</p> // Message when no reports are available
       )}
     </div>
   );

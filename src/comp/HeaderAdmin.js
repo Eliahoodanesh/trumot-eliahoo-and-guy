@@ -7,9 +7,9 @@ import { auth, firestore } from '../config/Firebase'; // Corrected path to fireb
 import { doc, getDoc } from 'firebase/firestore';
 
 export default function HeaderAdmin({ onLogout }) {
-  const [AdminName, setAdminName] = useState('');
-  const navigate = useNavigate();
-  const { logout } = useLogout();
+  const [AdminName, setAdminName] = useState(''); // State to store the admin name
+  const navigate = useNavigate(); // Hook for navigation
+  const { logout } = useLogout(); // Custom hook for logout functionality
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -17,29 +17,29 @@ export default function HeaderAdmin({ onLogout }) {
         try {
           const userDoc = await getDoc(doc(firestore, 'admins', user.uid));
           if (userDoc.exists()) {
-            setAdminName(userDoc.data().AdminName);
+            setAdminName(userDoc.data().AdminName); // Set admin name if found in Firestore
           }
         } catch (err) {
-          console.error('Error fetching username:', err);
+          console.error('Error fetching username:', err); // Log error if fetching fails
         }
       } else {
-        setAdminName('');
+        setAdminName(''); // Clear admin name if not authenticated
       }
     });
   
-    return () => unsubscribe();
+    return () => unsubscribe(); // Cleanup subscription when component unmounts
   }, []);
 
   const handleSignOut = async () => {
     try {
-      await logout();
-      navigate("/login");
+      await logout(); // Perform logout
+      navigate("/login"); // Redirect to login page after logout
       if (onLogout) {
-        onLogout();
+        onLogout(); // Trigger additional logout callback if passed
       }
     } catch (err) {
-      console.error('Error signing out:', err);
-      alert('Failed to sign out. Please try again.');
+      console.error('Error signing out:', err); // Log error if signout fails
+      alert('Failed to sign out. Please try again.'); // Alert the user if logout fails
     }
   };
 
@@ -47,18 +47,34 @@ export default function HeaderAdmin({ onLogout }) {
     <div className='container'>
       <header className='custom-header d-flex flex-wrap align-items-center justify-content-between'>
         <div className="d-flex flex-wrap align-items-center">
-          <img src={photo_trumot} alt='logo' className='App-img'></img>
-          <Link to="/admin-dashboard/edit-about" className='custom-link'>לערוך אודות</Link>
+          <img src={photo_trumot} alt='logo' className='App-img'></img> 
+          {/* Logo image */}
+          
+          <Link to="/admin-dashboard/edit-about" className='custom-link'>לערוך אודות</Link> 
+          {/* Link to edit "About" section */}
+          
           <span className="mx-2"> </span>
-          <Link to="/admin-dashboard/manage-users" className='custom-link'>ערוך משתמשים</Link>
+          
+          <Link to="/admin-dashboard/manage-users" className='custom-link'>ערוך משתמשים</Link> 
+          {/* Link to manage users */}
+          
           <span className="mx-2"> </span>
-          <Link to="/admin-dashboard/add-admin" className='custom-link'>הוספת מנהל</Link>
+          
+          <Link to="/admin-dashboard/add-admin" className='custom-link'>הוספת מנהל</Link> 
+          {/* Link to add a new admin */}
+          
           <span className="mx-2"> </span>
-          <Link to="/admin-dashboard/edit-contact" className='custom-link'>ערוך צור קשר</Link>
+          
+          <Link to="/admin-dashboard/edit-contact" className='custom-link'>ערוך צור קשר</Link> 
+          {/* Link to edit "Contact Us" section */}
         </div>
+
         <div className="flex-grow-1 d-flex justify-content-center justify-content-md-end align-items-center">
-          {AdminName && <span className="mx-3">שלום, המנהל {AdminName}</span>}
-          <button className="btn btn-primary mx-3" onClick={handleSignOut}>התנתק</button>
+          {AdminName && <span className="mx-3">שלום, המנהל {AdminName}</span>} 
+          {/* Display admin greeting if AdminName is available */}
+          
+          <button className="btn btn-primary mx-3" onClick={handleSignOut}>התנתק</button> 
+          {/* Logout button */}
         </div>
       </header>
     </div>
