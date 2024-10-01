@@ -166,6 +166,7 @@ export default function Query() {
                                 itemDesc={result.itemDescription} // Display item description
                                 itemNote={result.itemNote} // Display item note
                                 itemName={result.itemName} // Display item name
+                                category={result.category}
                                 onEmailUser={() => handleEmailUser(result.donorEmail)} // Email user function
                               />
                             </Col>

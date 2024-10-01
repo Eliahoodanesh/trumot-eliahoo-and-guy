@@ -14,6 +14,7 @@ import Footer from './comp/Footer';
 import Error from './comp/Error';
 import Managers from './comp/Managers';
 import PersonalArea from './comp/PersonalArea';
+import Feedback from './comp/Feedback';
 
 function App() {
   const location = useLocation();
@@ -39,6 +40,7 @@ function App() {
           <Route path="/Register" element={<Register />} />
           <Route path="/Managers" element={<Managers />} />
           <Route path="/PersonalArea" element={<PersonalArea/>}/>
+          <Route path="/Feedback" element={<Feedback/>}/>
           <Route path="/*" element={<Error />} />
         </Routes>
       </div>
