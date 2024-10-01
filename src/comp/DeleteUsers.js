@@ -2,58 +2,54 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { deleteUser } from 'firebase/auth';
 import { firestore, auth } from '../config/Firebase';
-import { Modal, Button } from 'react-bootstrap'; // הוספת הייבוא של Modal ו-Button מ-Bootstrap
+import { Modal, Button } from 'react-bootstrap'; // Import Modal and Button from Bootstrap
 
 export default function DeleteUsers() {
-  const [users, setUsers] = useState([]);
-  const [showModal, setShowModal] = useState(false); // state לניהול ה-Modal
-  const [selectedUser, setSelectedUser] = useState(null); // שמירת המשתמש שנבחר למחיקה
+  const [users, setUsers] = useState([]); // State to hold the list of users
+  const [showModal, setShowModal] = useState(false); // State to manage Modal visibility
+  const [selectedUser, setSelectedUser] = useState(null); // Holds the user selected for deletion
 
   useEffect(() => {
     const fetchUsers = async () => {
       const querySnapshot = await getDocs(collection(firestore, "users"));
       const usersList = querySnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data() // Extract user data from Firestore document
       }));
-      setUsers(usersList);
+      setUsers(usersList); // Set the list of users in state
     };
 
-    fetchUsers();
+    fetchUsers(); // Fetch users when component mounts
   }, []);
 
   const handleDelete = async () => {
-    if (!selectedUser) return;
+    if (!selectedUser) return; // Exit if no user is selected
     
-    const { id, uid } = selectedUser;
+    const { id, uid } = selectedUser; // Extract selected user's ID and UID
 
     try {
-      // מחיקת המסמך מה-Firestore
-      await deleteDoc(doc(firestore, "users", id));
+      await deleteDoc(doc(firestore, "users", id)); // Delete user document from Firestore
 
-      // מציאת המשתמש ב-Authentication ומחיקתו
       const userAuth = auth.currentUser;
       if (userAuth) {
-        await deleteUser(userAuth);
+        await deleteUser(userAuth); // Delete user from Firebase Authentication
       }
 
-      // עדכון ה-state לאחר מחיקה
-      setUsers(users.filter(user => user.id !== id));
-      console.log("המשתמש נמחק לחלוטין");
+      setUsers(users.filter(user => user.id !== id)); // Update users state to remove the deleted user
+      console.log("המשתמש נמחק לחלוטין"); // Log success message in Hebrew
     } catch (error) {
-      console.error("שגיאה במחיקת המשתמש:", error);
+      console.error("שגיאה במחיקת המשתמש:", error); // Log error message in Hebrew
     }
 
-    // סגירת ה-Modal לאחר מחיקה
-    setShowModal(false);
+    setShowModal(false); // Close the modal after deletion
   };
 
   const confirmDelete = (user) => {
-    setSelectedUser(user); // שמירת המשתמש שנבחר למחיקה
-    setShowModal(true); // הצגת ה-Modal
+    setSelectedUser(user); // Set the selected user for deletion
+    setShowModal(true); // Open the modal for confirmation
   };
 
-  const handleClose = () => setShowModal(false); // סגירת ה-Modal
+  const handleClose = () => setShowModal(false); // Close the modal
 
   return (
     <div className="container">
@@ -61,25 +57,24 @@ export default function DeleteUsers() {
       <ul className="list-group">
         {users.map(user => (
           <li key={user.id} className="list-group-item d-flex justify-content-between align-items-center">
-            {user.username || "שם לא זמין"}
-            <button className="btn btn-danger" onClick={() => confirmDelete(user)}>X</button>
+            {user.username || "שם לא זמין"} // Display username or fallback if not available
+            <button className="btn btn-danger" onClick={() => confirmDelete(user)}>X</button> // Delete button for each user
           </li>
         ))}
       </ul>
 
-      {/* Modal לאישור מחיקה */}
-      <Modal show={showModal} onHide={handleClose}>
+      <Modal show={showModal} onHide={handleClose}> // Modal for delete confirmation
         <Modal.Header closeButton>
-          <Modal.Title>אישור מחיקת משתמש</Modal.Title>
+          <Modal.Title>אישור מחיקת משתמש</Modal.Title> // Modal title in Hebrew
         </Modal.Header>
         <Modal.Body>
-          האם אתה בטוח שאתה רוצה למחוק את המשתמש הזה?
+          האם אתה בטוח שאתה רוצה למחוק את המשתמש הזה? // Confirmation question in Hebrew
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleClose}> // Button to close modal without deleting
             לא
           </Button>
-          <Button variant="danger" onClick={handleDelete}>
+          <Button variant="danger" onClick={handleDelete}> // Button to confirm and delete the user
             כן, מחק משתמש
           </Button>
         </Modal.Footer>

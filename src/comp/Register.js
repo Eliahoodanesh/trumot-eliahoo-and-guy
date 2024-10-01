@@ -1,34 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { signUp } from '../functionsFirebase/AuthUser'; // ייבוא נכון של פונקציית signUp
+import { signUp } from '../functionsFirebase/AuthUser'; // Correct import of signUp function
 import { useNavigate } from 'react-router-dom';
 
 function Register() {
-  const [cities, setCities] = useState([]);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [location, setLocation] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState(''); 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [cities, setCities] = useState([]); // State for storing cities
+  const [firstName, setFirstName] = useState(''); // State for first name
+  const [lastName, setLastName] = useState(''); // State for last name
+  const [location, setLocation] = useState(''); // State for selected city
+  const [phoneNumber, setPhoneNumber] = useState(''); // State for phone number
+  const [email, setEmail] = useState(''); // State for email
+  const [username, setUsername] = useState(''); // State for username
+  const [password, setPassword] = useState(''); // State for password
+  const [confirmPassword, setConfirmPassword] = useState(''); // State for confirming password
 
-  const apiUrl = "https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=1272";
+  const apiUrl = "https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=1272"; // API URL for fetching cities
 
   const navigate = useNavigate();
   
   // Fetching cities from API
   useEffect(() => {
-    async function fetchCities() {
+    const fetchCities = async () => {
       try {
         const response = await fetch(apiUrl);
         const data = await response.json();
-        const cityRecords = data.result.records.map(record => ({ id: record._id, name: record['שם_ישוב'] }));
+        const cityRecords = data.result.records.map(record => ({
+          id: record._id, 
+          name: record['שם_ישוב'] 
+        }));
         setCities(cityRecords);
       } catch (error) {
         console.error('Error fetching cities:', error);
       }
-    }
+    };
+
     fetchCities();
   }, []);
 
@@ -64,13 +68,23 @@ function Register() {
           <div className='col-sm-6'>
             <label>
               שם פרטי:
-              <input type='text' className='form-control' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+              <input 
+                type='text' 
+                className='form-control' 
+                value={firstName} 
+                onChange={(e) => setFirstName(e.target.value)} 
+              />
             </label>
           </div>
           <div className='col-sm-6'>
             <label>
               שם משפחה:
-              <input type='text' className='form-control' value={lastName} onChange={(e) => setLastName(e.target.value)} />
+              <input 
+                type='text' 
+                className='form-control' 
+                value={lastName} 
+                onChange={(e) => setLastName(e.target.value)} 
+              />
             </label>
           </div>
         </div>
@@ -80,7 +94,11 @@ function Register() {
           <div className='col-sm-6'>
             <label>
               מיקום בארץ:
-              <select className='form-control' value={location} onChange={(e) => setLocation(e.target.value)}>
+              <select 
+                className='form-control' 
+                value={location} 
+                onChange={(e) => setLocation(e.target.value)}
+              >
                 <option value='' disabled>בחר אזור בארץ</option>
                 {cities.map(city => (
                   <option key={city.id} value={city.name}>{city.name}</option>
@@ -97,6 +115,7 @@ function Register() {
                 value={phoneNumber} 
                 onChange={(e) => {
                   const value = e.target.value;
+                  // Allow only numbers and limit to 10 digits
                   if (value.length <= 10 && /^[0-9]*$/.test(value)) {
                     setPhoneNumber(value);
                   }
@@ -111,13 +130,23 @@ function Register() {
           <div className='col-sm-6'>
             <label>
               אימייל:
-              <input type='email' className='form-control' value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input 
+                type='email' 
+                className='form-control' 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+              />
             </label>
           </div>
           <div className='col-sm-6'>
             <label>
               שם משתמש:
-              <input type='text' className='form-control' value={username} onChange={(e) => setUsername(e.target.value)} />
+              <input 
+                type='text' 
+                className='form-control' 
+                value={username} 
+                onChange={(e) => setUsername(e.target.value)} 
+              />
             </label>
           </div>
         </div>
@@ -127,20 +156,35 @@ function Register() {
           <div className='col-sm-6'>
             <label>
               סיסמא:
-              <input type='password' className='form-control' value={password} onChange={(e) => setPassword(e.target.value)} />
+              <input 
+                type='password' 
+                className='form-control' 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+              />
             </label>
           </div>
           <div className='col-sm-6'>
             <label>
               אימות סיסמא:
-              <input type='password' className='form-control' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+              <input 
+                type='password' 
+                className='form-control' 
+                value={confirmPassword} 
+                onChange={(e) => setConfirmPassword(e.target.value)} 
+              />
             </label>
           </div>
         </div>
       </div>
       <br />
       {/* Sign Up Button */}
-      <button className='btn btn-primary' onClick={handleSignUp}>הרשמה</button>
+      <button 
+        className='btn btn-primary' 
+        onClick={handleSignUp}
+      >
+        הרשמה
+      </button>
     </div>
   );
 }
