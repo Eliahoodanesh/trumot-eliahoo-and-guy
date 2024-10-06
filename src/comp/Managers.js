@@ -25,7 +25,7 @@ export default function Managers() {
 
   if (!loggedIn) { // If user is not logged in, show the login form
     return (
-      <div className="container d-flex justify-content-center align-items-center" style={{ height: '25vh' }}>
+      <div className="content-container container d-flex justify-content-center align-items-center" style={{ height: '25vh' }}>
         <div className="col-md-6">
           <label htmlFor="password">הכנס סיסמה:</label> {/* Label for password input */}
           <input
@@ -43,7 +43,7 @@ export default function Managers() {
   }
 
   return (
-    <div className='container-fluid'>
+    <div className='content-container'>
       <br />
       <Tabs
         defaultActiveKey="editContact" // Set default active tab
