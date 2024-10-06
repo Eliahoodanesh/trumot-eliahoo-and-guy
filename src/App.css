@@ -373,3 +373,50 @@ body {
   padding: 20px;
   min-height: 100vh;
 }
+
+/* styles.css */
+.content-container {
+  background-color: #fffaf0; /* Light beige background */
+  padding: 20px;
+  border-radius: 8px; /* Add some rounded corners */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #555;
+}
+
+.form-control {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.btn-primary {
+  background-color: #4CAF50; /* Green button */
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  padding: 15px;
+  border-radius: 4px;
+  text-align: center;
+}

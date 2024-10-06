@@ -6,6 +6,7 @@ import AboutEditor from './AboutEditor'; // Import the AboutEditor component
 import DeleteUsers from './DeleteUsers'; // Import the DeleteUsers component
 import Report from './Report'; // Import the Report component
 import DeleteUpload from './DeleteUpload'; // Import the DeleteUpload component
+import FeedbackManager from './FeedbackManager';
 
 export default function Managers() {
   const [loggedIn, setLoggedIn] = useState(false); // State to track if user is logged in
@@ -63,6 +64,9 @@ export default function Managers() {
         </Tab>
         <Tab eventKey="deteleUpload" title="מחק פריטים"> {/* Tab for deleting uploads */}
           <DeleteUpload/>
+        </Tab>
+        <Tab eventKey="feedbacks" title="משובים"> {/* Tab for deleting uploads */}
+          <FeedbackManager/>
         </Tab>
       </Tabs>
     </div>

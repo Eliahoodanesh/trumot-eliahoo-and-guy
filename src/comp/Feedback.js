@@ -1,21 +1,33 @@
 import React, { useState } from 'react';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { firestore } from '../config/Firebase'; // Import Firestore from your Firebase.js
 
 export default function Feedback() {
   const [feedback, setFeedback] = useState(''); // State to hold the feedback text
   const [submitted, setSubmitted] = useState(false); // State to track if feedback is submitted
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission
-    // Here, you can handle the feedback submission (e.g., send to your server or Firestore)
-    console.log('Feedback submitted:', feedback);
-    setFeedback(''); // Clear the feedback input
-    setSubmitted(true); // Update submitted state
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    try {
+      // Add a new feedback document to the 'feedback' collection in Firestore
+      await addDoc(collection(firestore, 'feedback'), {
+        text: feedback,
+        timestamp: serverTimestamp(), // Use Firestore's serverTimestamp function
+      });
+  
+      console.log('Feedback submitted:', feedback);
+      setFeedback(''); // Clear the feedback input
+      setSubmitted(true); // Update submitted state
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+    }
   };
 
   return (
     <div className='container content-container'>
       <h1>משוב</h1>
-      {submitted ? ( // Conditional rendering based on submission status
+      {submitted ? (
         <div className='alert alert-success'>
           תודה על הפידבק שלך!
         </div>
