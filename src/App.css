@@ -62,10 +62,8 @@
 
 /* HEADER STYLES */
 .custom-header {
-  background-color: #58a9ff; /* Deep blue background */
-  color: white; /* White text for contrast */
-  padding: 10px 20px; /* Padding around the header */
-  border-radius: 10px; /* Rounded corners for a modern look */
+  background-color: #f8f9fa; /* Light background color */
+  border-bottom: 1px solid #e0e0e0; /* Subtle border at the bottom */
 }
 
 .custom-header img {
@@ -123,13 +121,12 @@
 
 
 .custom-link {
-  color: black;
-  text-decoration: none;
+  color: #007bff; /* Bootstrap primary link color */
+  text-decoration: none; /* Remove underline */
 }
 
 .custom-link:hover {
-  color: blue;
-  text-decoration: underline;
+  text-decoration: underline; /* Underline on hover for better UX */
 }
 
 /* Image Styles */
@@ -376,17 +373,52 @@ body {
 
 /* styles.css */
 .content-container {
-  background-color: #fffaf0; /* Light beige background */
   padding: 20px;
-  border-radius: 8px; /* Add some rounded corners */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  max-width: 800px;
+  margin: auto;
+  background-color: #fffaf0; /* Light background color */
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  color: #333;
   text-align: center;
-  margin-bottom: 20px;
+  color: #333;
 }
+
+.profile-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.profile-info div {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.profile-image {
+  border-radius: 50%; /* Make the image round */
+  width: 225px;
+  height: 225px;
+  object-fit: cover; /* Cover the entire area */
+  border: 2px solid #ff6347; /* Optional: add a border */
+}
+
+button {
+  background-color: #ff6347; /* Primary button color */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ff4500; /* Darker shade on hover */
+}
+
 
 .form-label {
   font-weight: bold;
