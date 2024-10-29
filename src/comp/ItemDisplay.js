@@ -14,48 +14,47 @@ export default function ItemDisplay({
   itemName, 
   onEmailUser, 
   donorEmail, 
-  category 
+  category
 }) {
   const navigate = useNavigate();
   const db = getFirestore();
 
   const handleReport = async () => {
-    console.log("Starting report submission...");
-    const reportKey = `reported_${itemName}_${donatingUser}`;
+    const reportKey = `reported_${itemName}`;
 
     try {
-      const querySnapshot = await getDocs(
-        query(collection(db, "reports"), where("itemName", "==", itemName))
-      );
-      if (!querySnapshot.empty) {
-        alert('כבר דיווחת על פריט זה.'); // Already reported
-        localStorage.setItem(reportKey, 'true');
+        // Check if the item has already been reported
+        const querySnapshot = await getDocs(query(collection(db, "report"), where("itemName", "==", itemName)));
+        if (!querySnapshot.empty) {
+            alert('כבר דיווחת על פריט זה.');
+            localStorage.setItem(reportKey, 'true');
+            return;
+        }
+    } catch (error) {
+        console.error("Error checking report status: ", error);
+        alert('אירעה שגיאה בבדיקת סטטוס הדיווח');
         return;
-      }
-    } catch (error) {
-      console.error("Error checking report status: ", error);
-      alert('אירעה שגיאה בבדיקת סטטוס הדיווח'); // Error checking report status
-      return;
     }
 
     try {
-      await addDoc(collection(db, 'reports'), {
-        itemName, 
-        donatingUser, 
-        city, 
-        phoneNum, 
-        itemDesc,
-        itemNote,
-        category
-      });
-      console.log("Report submitted successfully");
-      localStorage.setItem(reportKey, 'true');
-      alert('הדיווח נשלח בהצלחה'); // Report submitted successfully
+        // Add the report to Firebase
+        const docRef = await addDoc(collection(db, 'report'), {
+            itemName, 
+            donatingUser, 
+            city, 
+            phoneNum, 
+            itemDesc,
+            itemNote,
+        });
+        console.log("Report added with ID: ", docRef.id);
+        localStorage.setItem(reportKey, 'true');
+        alert('הדיווח נשלח בהצלחה');
     } catch (error) {
-      console.error("Error adding report: ", error);
-      alert('אירעה שגיאה בעת שליחת הדיווח'); // Error submitting report
+        console.error("Error adding report: ", error);
+        alert(`אירעה שגיאה בעת שליחת הדיווח: ${error.message}`);
     }
-  };
+};
+
 
   return (
     <Card className='h-100'>
