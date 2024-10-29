@@ -91,7 +91,7 @@ export default function UserProfile() {
   }
 
   return (
-    <div className="content-container container">
+    <div className="content-container container-fluid">
       <h1>פרופיל משתמש</h1>
       {userData ? (
         <div className="profile-info">

@@ -1,27 +1,45 @@
 import React from 'react';
-import { Carousel } from 'react-bootstrap'; // Importing Bootstrap Carousel for image display
-import Card from 'react-bootstrap/Card'; // Importing Bootstrap Card component
+import { Carousel } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
 import { useNavigate } from 'react-router-dom';
-import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore'; // Import Firestore methods
+import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 
-export default function ItemDisplay({ imageUrls, donatingUser, city, phoneNum, itemDesc, itemNote, itemName, onEmailUser, donorEmail, category }) {
+export default function ItemDisplay({ 
+  imageUrls, 
+  donatingUser, 
+  city, 
+  phoneNum, 
+  itemDesc, 
+  itemNote, 
+  itemName, 
+  onEmailUser, 
+  donorEmail, 
+  category 
+}) {
   const navigate = useNavigate();
-  const db = getFirestore(); // Get a reference to the Firestore database
+  const db = getFirestore();
 
   const handleReport = async () => {
-    const reportKey = `reported_${itemName}`; // Create a unique key for localStorage to track reported items
-  
-    // Check in Firebase if the item has already been reported
-    const querySnapshot = await getDocs(query(collection(db, "reports"), where("itemName", "==", itemName)));
-    if (!querySnapshot.empty) {
-      alert('כבר דיווחת על פריט זה.');
-      localStorage.setItem(reportKey, 'true'); // Mark as reported in localStorage
+    console.log("Starting report submission...");
+    const reportKey = `reported_${itemName}_${donatingUser}`;
+
+    try {
+      const querySnapshot = await getDocs(
+        query(collection(db, "reports"), where("itemName", "==", itemName))
+      );
+      if (!querySnapshot.empty) {
+        alert('כבר דיווחת על פריט זה.'); // Already reported
+        localStorage.setItem(reportKey, 'true');
+        return;
+      }
+    } catch (error) {
+      console.error("Error checking report status: ", error);
+      alert('אירעה שגיאה בבדיקת סטטוס הדיווח'); // Error checking report status
       return;
     }
-  
+
     try {
-      // Add report to Firebase
-      const docRef = await addDoc(collection(db, 'reports'), {
+      await addDoc(collection(db, 'reports'), {
         itemName, 
         donatingUser, 
         city, 
@@ -30,15 +48,12 @@ export default function ItemDisplay({ imageUrls, donatingUser, city, phoneNum, i
         itemNote,
         category
       });
-      console.log("Document written with ID: ", docRef.id);
-  
-      // Save the report status in localStorage
+      console.log("Report submitted successfully");
       localStorage.setItem(reportKey, 'true');
-  
-      alert('הדיווח נשלח בהצלחה'); // Report submitted successfully message
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      alert('אירעה שגיאה בעת שליחת הדיווח'); // Error handling message
+      alert('הדיווח נשלח בהצלחה'); // Report submitted successfully
+    } catch (error) {
+      console.error("Error adding report: ", error);
+      alert('אירעה שגיאה בעת שליחת הדיווח'); // Error submitting report
     }
   };
 
@@ -48,7 +63,12 @@ export default function ItemDisplay({ imageUrls, donatingUser, city, phoneNum, i
       <Carousel>
         {imageUrls && imageUrls.map((url, index) => (
           <Carousel.Item key={index}>
-            <img src={url} alt={itemName} className='d-block w-100 img-fluid' style={{ maxHeight: '200px', objectFit: 'contain' }} />
+            <img 
+              src={url} 
+              alt={itemName} 
+              className='d-block w-100 img-fluid' 
+              style={{ maxHeight: '200px', objectFit: 'contain' }} 
+            />
           </Carousel.Item>
         ))}
       </Carousel>
@@ -58,15 +78,18 @@ export default function ItemDisplay({ imageUrls, donatingUser, city, phoneNum, i
           <strong>תורם:</strong> {donatingUser}<br /> {/* Donating user */}
           <strong>מיקום איסוף:</strong> {city}<br /> {/* Pickup location */}
           <strong>טלפון:</strong> {phoneNum}<br /> {/* Phone number */}
-          <strong>תיאור פריט:</strong> {itemDesc}<br/> {/* Item description */}
-          <strong>הערות: </strong> {itemNote} <br/>{/* Item notes */}
-          <strong>קטגוריה: </strong>{category}
+          <strong>תיאור פריט:</strong> {itemDesc}<br /> {/* Item description */}
+          <strong>הערות:</strong> {itemNote}<br /> {/* Item notes */}
         </Card.Text>
         <div className="d-flex justify-content-between">
           {/* Button to contact donor via email */}
-          <button className='btn btn-primary' onClick={() => onEmailUser(donorEmail)}>צור קשר באמצעות מייל</button>
+          <button className='btn btn-primary' onClick={() => onEmailUser(donorEmail)}>
+            צור קשר באמצעות מייל
+          </button>
           {/* Button to report the item */}
-          <button className='btn btn-danger' onClick={handleReport}>דווח</button>
+          <button className='btn btn-danger' onClick={handleReport}>
+            דווח
+          </button>
         </div>
       </Card.Body>
     </Card>
