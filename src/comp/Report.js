@@ -7,7 +7,7 @@ export default function Report() {
   useEffect(() => {
     const fetchReports = async () => {
       const db = getFirestore(); // Get a reference to the Firestore database
-      const reportsCollection = collection(db, 'reports'); // Reference the 'reports' collection
+      const reportsCollection = collection(db, 'report'); // Reference the 'reports' collection
       const reportSnapshot = await getDocs(reportsCollection); // Fetch the documents
       const reportList = reportSnapshot.docs.map(doc => ({
         id: doc.id, // Store the report ID
@@ -21,7 +21,7 @@ export default function Report() {
 
   const handleDelete = async (reportId) => {
     const db = getFirestore();
-    await deleteDoc(doc(db, 'reports', reportId)); // Delete the document from Firestore
+    await deleteDoc(doc(db, 'report', reportId)); // Delete the document from Firestore
     setReports(reports.filter(report => report.id !== reportId)); // Update the report list
   };
 
