@@ -43,7 +43,7 @@ export default function Managers() {
   }
 
   return (
-    <div className='content-container'>
+    <div className='container-fluid'>
       <br />
       <Tabs
         defaultActiveKey="editContact" // Set default active tab

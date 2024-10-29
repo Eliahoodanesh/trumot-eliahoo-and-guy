@@ -25,7 +25,7 @@ export default function Feedback() {
   };
 
   return (
-    <div className='container content-container'>
+    <div className='container-fluid content-container'>
       <h1>משוב</h1>
       {submitted ? (
         <div className='alert alert-success'>
