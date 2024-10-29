@@ -7,7 +7,7 @@ function HomePage() {
 
   return (
     <div className='container-fluid'>
-      <div className='container content-container'>
+      <div className='container-fluid'>
         <h2>דף בית</h2> 
         {/* Heading for the homepage */}
         

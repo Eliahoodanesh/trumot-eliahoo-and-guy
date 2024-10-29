@@ -31,11 +31,11 @@ export default function About() {
   }, []); // Run once on mount
 
   if (loading) {
-    return <div className='container'><p>טוען...</p></div>; // Loading message
+    return <div className='container-fluid'><p>טוען...</p></div>; // Loading message
   }
 
   if (error) {
-    return <div className='container'><p>{error}</p></div>; // Error message
+    return <div className='container-fluid'><p>{error}</p></div>; // Error message
   }
 
   return (
